@@ -1,0 +1,56 @@
+import { Notification } from '../types';
+
+export const mockNotifications: Notification[] = [
+  {
+    id: 'notif-001',
+    type: 'critical',
+    title: 'Critical Flood Report',
+    message: 'Critical flood report received from Bhopal. 78 people reported trapped.',
+    timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+    read: false,
+    reportId: 'DS-2026-84A72',
+  },
+  {
+    id: 'notif-002',
+    type: 'info',
+    title: 'Responder Assigned',
+    message: 'Alpha Medical Response Team assigned to DS-2026-84A72.',
+    timestamp: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
+    read: false,
+    reportId: 'DS-2026-84A72',
+  },
+  {
+    id: 'notif-003',
+    type: 'success',
+    title: 'Connection Restored',
+    message: 'Internet connection restored. 3 offline reports synchronized.',
+    timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+    read: false,
+  },
+  {
+    id: 'notif-004',
+    type: 'warning',
+    title: 'Resource Critical',
+    message: 'Medical first aid kits at critical stock level (28% remaining).',
+    timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+    read: true,
+  },
+  {
+    id: 'notif-005',
+    type: 'info',
+    title: 'New Report Verified',
+    message: 'Report DS-2026-31C45 verified and prioritized as Critical.',
+    timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+    read: true,
+    reportId: 'DS-2026-31C45',
+  },
+  {
+    id: 'notif-006',
+    type: 'critical',
+    title: 'Cyclone Alert',
+    message: 'Cyclone warning issued for Odisha coastline. 82,000 people in affected zone.',
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    read: true,
+    reportId: 'DS-2026-72B38',
+  },
+];
