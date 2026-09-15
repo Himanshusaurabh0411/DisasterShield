@@ -1,56 +1,62 @@
 import React, { useState } from 'react';
-import { Bell, Pause, Play, AlertCircle } from 'lucide-react';
+import { Play, Pause, Radio, AlertCircle } from 'lucide-react';
 
-const TICKER_ITEMS = [
-  { id: '1', tag: 'NDRF DEPLOYMENT', text: '10th & 12th NDRF Battalions deployed for flood rescue in coastal districts. Emergency teams on 24x7 readiness.' },
-  { id: '2', tag: 'TOLL-FREE HELPLINE', text: 'Dial 1078 (Toll-Free) or 112 for immediate disaster rescue and medical assistance across all States & UTs.' },
-  { id: '3', tag: 'IMD WEATHER ADVISORY', text: 'Heavy rainfall and gale wind warning issued for Odisha, West Bengal, and Coastal Andhra Pradesh.' },
-  { id: '4', tag: 'OFFLINE RESILIENCE', text: 'Citizen Reporting Facility: Citizen reports are cached securely in local browser storage during connectivity loss and sync automatically.' },
-  { id: '5', tag: 'SEISMIC MONITOR', text: 'National Center for Seismology confirms normal background parameters across Himalayan Fault Zone.' },
-  { id: '6', tag: 'RELIEF DISTRIBUTION', text: 'Central warehouse stockpiles activated: 50,000 trauma kits and potable water tanks dispatched to transit camps.' },
+const EMERGENCY_BULLETINS = [
+  { id: '1', time: 'JUST IN', text: 'Cyclone monitoring: Wind velocity steady at 85 km/h across eastern coastal belt. Emergency shelters active.' },
+  { id: '2', time: '1m ago', text: 'Lower Lake Bhopal: Automated sensors reporting stable reservoir discharge. Drainage units on standby.' },
+  { id: '3', time: '4m ago', text: 'Volunteer squad Bravo-2 mobilized with water purification equipment and 500 family ration kits.' },
+  { id: '4', time: '7m ago', text: 'Offline reporting pipeline: 12 local crisis dossiers successfully synced to central dispatch queue.' },
+  { id: '5', time: '11m ago', text: 'Medical dispatch team en route to Sector 4 temporary triage clinic. Blood donation drives underway.' },
 ];
 
 export function BreakingNewsTicker() {
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   return (
-    <div className="w-full bg-[#FFF8E7] border-b border-[#F0D59A] text-slate-900 text-xs select-none">
-      <div className="max-w-7xl mx-auto flex items-stretch h-8.5 sm:h-9">
-        {/* Left Official Saffron Badge */}
-        <div className="flex items-center gap-2 px-3.5 bg-[#E65100] text-white font-bold shrink-0 z-10 text-[11px] uppercase tracking-wider">
-          <Bell className="h-3.5 w-3.5" />
-          <span>LATEST UPDATES</span>
-          <span className="text-[9px] font-normal text-amber-200 hidden sm:inline">| नवीनतम अपडेट</span>
+    <div
+      className="w-full bg-slate-100 border-b border-slate-200 text-slate-800 text-xs overflow-hidden select-none"
+      role="region"
+      aria-label="Live Emergency Broadcast"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-10">
+        {/* Live Broadcast Badge */}
+        <div className="flex items-center gap-2 bg-[#FF9933] text-slate-900 px-3 py-1 rounded-lg font-extrabold text-[11px] shrink-0 uppercase tracking-wider shadow-xs mr-3">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-600 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+          </span>
+          <span className="hidden sm:inline">LIVE EMERGENCY FEED</span>
+          <span className="sm:hidden">LIVE</span>
         </div>
 
-        {/* Marquee Content */}
-        <div className="relative flex-1 overflow-hidden flex items-center px-2">
+        {/* Scrolling Ticker Text */}
+        <div className="flex-1 overflow-hidden relative">
           <div
-            className={`flex whitespace-nowrap items-center gap-8 ${
-              isPaused ? '' : 'animate-ticker'
-            }`}
+            className="whitespace-nowrap animate-ticker flex items-center gap-8"
+            style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
           >
-            {TICKER_ITEMS.concat(TICKER_ITEMS).map((item, idx) => (
-              <div key={`${item.id}-${idx}`} className="flex items-center gap-2 text-xs">
-                <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold">
-                  {item.tag}
+            {EMERGENCY_BULLETINS.concat(EMERGENCY_BULLETINS).map((item, index) => (
+              <span key={`${item.id}-${index}`} className="inline-flex items-center gap-2 text-slate-700">
+                <span className="font-bold text-[#003366] text-[11px] bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                  {item.time}
                 </span>
-                <span className="text-slate-800 font-medium">{item.text}</span>
-                <span className="text-slate-400 mx-2 font-bold">&bull;</span>
-              </div>
+                <span className="font-medium">{item.text}</span>
+                <span className="text-slate-400 font-bold ml-3">&bull;</span>
+              </span>
             ))}
           </div>
         </div>
 
-        {/* GIGW Accessibility Control: Pause / Play Button */}
-        <div className="flex items-center px-2.5 border-l border-[#F0D59A] bg-[#FFF8E7] shrink-0">
+        {/* Play/Pause Button */}
+        <div className="pl-3 shrink-0">
           <button
-            onClick={() => setIsPaused((prev) => !prev)}
-            className="p-1 rounded text-slate-700 hover:text-[#003366] hover:bg-amber-100 transition-colors"
-            title={isPaused ? 'Resume scrolling ticker' : 'Pause scrolling ticker'}
-            aria-label={isPaused ? 'Resume ticker' : 'Pause ticker'}
+            type="button"
+            onClick={() => setIsPlaying((prev) => !prev)}
+            className="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition-colors cursor-pointer"
+            aria-label={isPlaying ? 'Pause live feed' : 'Resume live feed'}
+            title={isPlaying ? 'Pause ticker' : 'Play ticker'}
           >
-            {isPaused ? <Play className="h-3.5 w-3.5 text-[#E65100]" /> : <Pause className="h-3.5 w-3.5" />}
+            {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
           </button>
         </div>
       </div>

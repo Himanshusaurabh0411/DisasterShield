@@ -1,170 +1,174 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ExternalLink, Phone, Mail, MapPin, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Shield,
+  Activity,
+  HeartHandshake,
+  Github,
+  Mail,
+  PhoneCall,
+  ExternalLink,
+  MapPin,
+  Radio
+} from 'lucide-react';
 
 export function Footer() {
+  const navigate = useNavigate();
+
   return (
-    <footer className="mt-auto select-none">
-      {/* Top Tricolor Strip */}
-      <div className="tricolor-bar" />
-
-      {/* Main Navy Institutional Body */}
-      <div className="bg-[#002244] text-white pt-10 pb-6 border-t border-[#001830]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-white/10 text-xs">
-            {/* Column 1: NDMA Headquarters & Contact */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-[#FF9933]" />
-                <h4 className="font-bold text-sm tracking-wide text-[#FF9933]">
-                  NDMA HEADQUARTERS
-                </h4>
+    <footer className="w-full bg-[#0B192C] text-slate-300 border-t border-navy-800 text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          {/* Column 1: Organization & Mission */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF9933] to-[#E65100] text-slate-900 shadow-sm">
+                <Shield className="h-5 w-5 stroke-[2.2] text-slate-950" />
               </div>
-              <p className="text-slate-300 leading-relaxed">
-                National Disaster Management Authority (NDMA)<br />
-                Ministry of Home Affairs, Government of India<br />
-                NDMA Bhawan, A-1, Safdarjung Enclave,<br />
-                New Delhi &ndash; 110029, India
-              </p>
-              <div className="space-y-1.5 pt-1 text-slate-200">
-                <div className="flex items-center gap-2">
-                  <Phone className="h-3.5 w-3.5 text-[#FF9933]" />
-                  <span>24x7 Helpline: <strong className="text-white">1078</strong> (Toll Free)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="h-3.5 w-3.5 text-[#FF9933]" />
-                  <span>Control Room: 011-24363260</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="h-3.5 w-3.5 text-[#FF9933]" />
-                  <span>controlroom[at]ndma[dot]gov[dot]in</span>
-                </div>
-              </div>
+              <span className="text-xl font-extrabold text-white tracking-tight">
+                Disaster<span className="text-[#FF9933]">Shield</span>
+              </span>
             </div>
-
-            {/* Column 2: Citizen Emergency Services */}
-            <div className="space-y-3">
-              <h4 className="font-bold text-sm tracking-wide text-[#FF9933] border-b border-white/10 pb-1">
-                CITIZEN SERVICES
-              </h4>
-              <ul className="space-y-2 text-slate-300">
-                <li>
-                  <Link to="/report" className="hover:text-[#FF9933] transition-colors flex items-center gap-1.5">
-                    &bull; Report Disaster / Incident (आपातकाल दर्ज करें)
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/track" className="hover:text-[#FF9933] transition-colors flex items-center gap-1.5">
-                    &bull; Track Incident Dossier (स्थिति ट्रैक करें)
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/live" className="hover:text-[#FF9933] transition-colors flex items-center gap-1.5">
-                    &bull; Live Incident & Response Grid (लाइव स्थिति)
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/responder" className="hover:text-[#FF9933] transition-colors flex items-center gap-1.5">
-                    &bull; EOC Response Battalion Roster (राहत दल)
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/analytics" className="hover:text-[#FF9933] transition-colors flex items-center gap-1.5">
-                    &bull; Annual Disaster Statistical Bulletins (सांख्यिकी)
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Column 3: Apex Government Portals */}
-            <div className="space-y-3">
-              <h4 className="font-bold text-sm tracking-wide text-[#FF9933] border-b border-white/10 pb-1">
-                GOVERNMENT OF INDIA PORTALS
-              </h4>
-              <ul className="space-y-2 text-slate-300">
-                <li>
-                  <a href="https://www.india.gov.in" target="_blank" rel="noreferrer" className="hover:text-[#FF9933] transition-colors flex items-center justify-between">
-                    <span>&bull; National Portal of India (india.gov.in)</span>
-                    <ExternalLink className="h-3 w-3 text-slate-400" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://www.digitalindia.gov.in" target="_blank" rel="noreferrer" className="hover:text-[#FF9933] transition-colors flex items-center justify-between">
-                    <span>&bull; Digital India Portal</span>
-                    <ExternalLink className="h-3 w-3 text-slate-400" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://mausam.imd.gov.in" target="_blank" rel="noreferrer" className="hover:text-[#FF9933] transition-colors flex items-center justify-between">
-                    <span>&bull; India Meteorological Department (IMD)</span>
-                    <ExternalLink className="h-3 w-3 text-slate-400" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://cwc.gov.in" target="_blank" rel="noreferrer" className="hover:text-[#FF9933] transition-colors flex items-center justify-between">
-                    <span>&bull; Central Water Commission (CWC Flood Telemetry)</span>
-                    <ExternalLink className="h-3 w-3 text-slate-400" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://ndrf.gov.in" target="_blank" rel="noreferrer" className="hover:text-[#FF9933] transition-colors flex items-center justify-between">
-                    <span>&bull; National Disaster Response Force (NDRF)</span>
-                    <ExternalLink className="h-3 w-3 text-slate-400" />
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Column 4: Institutional Policies & Compliance */}
-            <div className="space-y-3">
-              <h4 className="font-bold text-sm tracking-wide text-[#FF9933] border-b border-white/10 pb-1">
-                POLICIES & GUIDELINES
-              </h4>
-              <ul className="space-y-2 text-slate-300">
-                <li>
-                  <Link to="/about" className="hover:text-[#FF9933] transition-colors">
-                    &bull; Disaster Management Act 2005
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/about" className="hover:text-[#FF9933] transition-colors">
-                    &bull; Website Policies & Disclaimer
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/about" className="hover:text-[#FF9933] transition-colors">
-                    &bull; Privacy Policy & Hyperlinking Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/about" className="hover:text-[#FF9933] transition-colors">
-                    &bull; Help & Accessibility Statement
-                  </Link>
-                </li>
-                <li>
-                  <span className="text-[#FF9933] font-semibold block pt-1">
-                    GIGW 2.0 Compliant Portal
-                  </span>
-                </li>
-              </ul>
+            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+              DisasterShield is an independent, community-driven civic-tech humanitarian network.
+              We engineer open-source, offline-first emergency coordination tools to ensure zero report
+              loss when critical telecom and power infrastructure collapses.
+            </p>
+            <div className="flex items-center gap-3 pt-1 text-slate-400">
+              <a
+                href="https://github.com/Himanshusaurabh0411/DisasterShield"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 hover:text-white transition-colors bg-white/5 px-3 py-1.5 rounded-lg border border-white/10"
+              >
+                <Github className="h-4 w-4" />
+                <span>Open Source on GitHub</span>
+                <ExternalLink className="h-3 w-3" />
+              </a>
             </div>
           </div>
 
-          {/* Bottom NIC Bar */}
-          <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-slate-300">
-            <div>
-              <p>
-                Website Content Managed by <strong>National Disaster Management Authority, Government of India</strong>.
-              </p>
-              <p className="text-slate-400">
-                Designed, Developed and Hosted by <strong>National Informatics Centre (NIC)</strong>.
+          {/* Column 2: Citizen Emergency Services */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Emergency Services</h4>
+            <ul className="space-y-2">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigate('/report')}
+                  className="hover:text-[#FF9933] transition-colors text-left cursor-pointer"
+                >
+                  Report an Emergency
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigate('/track')}
+                  className="hover:text-[#FF9933] transition-colors text-left cursor-pointer"
+                >
+                  Track My Report Status
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigate('/live')}
+                  className="hover:text-[#FF9933] transition-colors text-left cursor-pointer"
+                >
+                  Live Crisis Map & Heatmap
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigate('/responder')}
+                  className="hover:text-[#FF9933] transition-colors text-left cursor-pointer"
+                >
+                  Volunteer & Dispatch Desk
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => navigate('/analytics')}
+                  className="hover:text-[#FF9933] transition-colors text-left cursor-pointer"
+                >
+                  Response Analytics Bulletin
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Platform & Resilience */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Civic Technology</h4>
+            <ul className="space-y-2 text-slate-400">
+              <li>
+                <span className="text-slate-300 font-semibold block">Offline-First Engine</span>
+                <span className="text-[11px]">IndexedDB & Web Storage caching</span>
+              </li>
+              <li>
+                <span className="text-slate-300 font-semibold block">Automated Queue Sync</span>
+                <span className="text-[11px]">Background packet re-transmission</span>
+              </li>
+              <li>
+                <span className="text-slate-300 font-semibold block">OpenStreetMap Integration</span>
+                <span className="text-[11px]">CartoDB & OpenStreetMap telemetry</span>
+              </li>
+              <li>
+                <span className="text-slate-300 font-semibold block">Triage Screening</span>
+                <span className="text-[11px]">Geospatial deduplication heuristic</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: 24x7 Emergency Helplines */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Rapid Helplines</h4>
+            <div className="space-y-2 text-slate-400">
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-[10px] text-slate-400 uppercase font-semibold block">National Emergency</span>
+                <a href="tel:112" className="text-white font-bold text-sm hover:text-[#FF9933] flex items-center gap-1.5 mt-0.5">
+                  <PhoneCall className="h-3.5 w-3.5 text-[#FF9933]" /> 112 (ERSS)
+                </a>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-[10px] text-slate-400 uppercase font-semibold block">Disaster Assistance</span>
+                <a href="tel:1078" className="text-white font-bold text-sm hover:text-[#FF9933] flex items-center gap-1.5 mt-0.5">
+                  <PhoneCall className="h-3.5 w-3.5 text-emerald-400" /> 1078 (Toll Free)
+                </a>
+              </div>
+              <p className="text-[11px] text-slate-400 leading-snug">
+                For life-threatening crises, immediately call local first responders while filing your digital docket.
               </p>
             </div>
-            <div className="flex items-center gap-4 text-slate-400">
-              <span>Website Last Updated: 15 Sep 2026</span>
-              <span>&bull;</span>
-              <span>Visitors: 2,418,902</span>
-            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <p>© {new Date().getFullYear()} DisasterShield Initiative. Built as an open-source humanitarian public utility.</p>
+          <div className="flex items-center gap-6">
+            <button
+              type="button"
+              onClick={() => navigate('/about')}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              About Project
+            </button>
+            <a
+              href="https://github.com/Himanshusaurabh0411/DisasterShield"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1"
+            >
+              GitHub Repository <ExternalLink className="h-3 w-3" />
+            </a>
+            <span className="text-emerald-400 flex items-center gap-1 font-semibold">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              All Systems Operational
+            </span>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UploadCloud, Image as ImageIcon, Video, X, CheckCircle2, AlertCircle } from 'lucide-react';
+import { UploadCloud, Image as ImageIcon, Video, X, CheckCircle2, AlertCircle, Box, Sparkles } from 'lucide-react';
 import { MediaFile } from '@/types';
 import { formatFileSize } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Incident3DSceneProjection } from '@/components/emergency/Incident3DSceneProjection';
 
 interface MediaUploadProps {
   files: MediaFile[];
@@ -12,6 +13,8 @@ interface MediaUploadProps {
 
 export function MediaUpload({ files, onChange }: MediaUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [show3DProjection, setShow3DProjection] = useState(false);
+  const [active3DImageUrl, setActive3DImageUrl] = useState<string | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processFiles = (uploadedFiles: FileList | null) => {
@@ -163,6 +166,19 @@ export function MediaUpload({ files, onChange }: MediaUploadProps) {
                         <CheckCircle2 className="h-3 w-3" /> READY
                       </span>
                     </div>
+
+                    {!isVideo && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActive3DImageUrl(file.url);
+                          setShow3DProjection(true);
+                        }}
+                        className="w-full mt-1 py-1 px-1.5 rounded bg-blue-50 hover:bg-[#003366] text-[#003366] hover:text-white border border-blue-200 text-[10px] font-bold flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <Box className="h-3 w-3" /> Project in 3D Scene
+                      </button>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -170,6 +186,62 @@ export function MediaUpload({ files, onChange }: MediaUploadProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* 3D Scene Projection Action Trigger Banner */}
+      <div className="p-3.5 rounded-xl border border-amber-300 bg-amber-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2.5 text-amber-900">
+          <div className="h-8 w-8 rounded-lg bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-800 font-bold shrink-0">
+            <Box className="h-4 w-4 text-amber-700" />
+          </div>
+          <div>
+            <span className="font-bold block text-slate-900">
+              3D Spatial Scene LiDAR Projection / 3D दृश्य प्रक्षेपण
+            </span>
+            <span className="text-[11px] text-slate-600">
+              Transform 2D incident photographs into an interactive volumetric 3D scene projection.
+            </span>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          size="sm"
+          onClick={() => {
+            if (files.length > 0 && !files[0].type.startsWith('video')) {
+              setActive3DImageUrl(files[0].url);
+            }
+            setShow3DProjection(true);
+          }}
+          className="gap-1.5 text-xs font-bold bg-[#FF9933] hover:bg-[#E65100] text-slate-900 hover:text-white rounded-xl shadow-xs cursor-pointer shrink-0 transition-all"
+        >
+          <Sparkles className="h-3.5 w-3.5" />
+          <span>{show3DProjection ? 'Hide 3D Projection' : 'Generate 3D Scene Projection'}</span>
+        </Button>
+      </div>
+
+      {/* Embedded 3D Scene Projection Display */}
+      {show3DProjection && (
+        <div className="pt-2">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-bold text-[#003366] uppercase tracking-wider flex items-center gap-1.5">
+              <Box className="h-4 w-4" />
+              Live 3D Scene Reconstruction
+            </span>
+            <button
+              type="button"
+              onClick={() => setShow3DProjection(false)}
+              className="text-xs text-slate-500 hover:text-slate-800 underline font-semibold cursor-pointer"
+            >
+              Close 3D View &times;
+            </button>
+          </div>
+          <Incident3DSceneProjection
+            initialImageUrl={active3DImageUrl}
+            incidentTitle="Citizen Ground Evidence Projection"
+            onClose={() => setShow3DProjection(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }

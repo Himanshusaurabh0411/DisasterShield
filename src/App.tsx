@@ -9,6 +9,7 @@ import { Report } from '@/pages/Report';
 import { Track } from '@/pages/Track';
 import { Live } from '@/pages/Live';
 import { Responder } from '@/pages/Responder';
+import { RestrictedResponder } from '@/pages/RestrictedResponder';
 import { Analytics } from '@/pages/Analytics';
 import { Admin } from '@/pages/Admin';
 import { About } from '@/pages/About';
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="track" element={<Track />} />
             <Route path="live" element={<Live />} />
             <Route path="responder" element={<Responder />} />
+            <Route path="restricted-responder" element={<RestrictedResponder />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="admin" element={<Admin />} />
             <Route path="about" element={<About />} />

@@ -90,6 +90,7 @@ export interface Incident {
   injured: number;
   trapped: number;
   respondersAssigned: string[];
+  imageUrl?: string;
   createdAt: string;
   updatedAt: string;
   lat: number;
@@ -148,3 +149,88 @@ export interface AdminReport extends DisasterReport {
   verifiedAt?: string;
   adminNotes?: string;
 }
+
+export interface ResponderProfile {
+  id: string;
+  name: string;
+  role: string;
+  agency: string;
+  badgeNumber: string;
+  clearanceLevel: 'LEVEL-1' | 'LEVEL-2' | 'LEVEL-3';
+  sector: string;
+  phone: string;
+}
+
+export interface NearestUnit {
+  id: string;
+  name: string;
+  type: string;
+  distanceKm: number;
+  etaMinutes: number;
+  capacity: number;
+  assigned?: boolean;
+}
+
+export interface SOSAlert {
+  id: string;
+  trackingId: string;
+  disasterType: DisasterType;
+  title: string;
+  locationArea: string;
+  latitude: number;
+  longitude: number;
+  priority: PriorityLevel;
+  peopleAffected: number;
+  injured: number;
+  trapped: number;
+  timestamp: string;
+  nearestUnits: NearestUnit[];
+}
+
+export interface AdminSession {
+  isAuthenticated: boolean;
+  coordinatorId: string;
+  name: string;
+  role: string;
+  clearance: 'LEVEL-3_COORDINATOR' | 'SUPER_ADMIN';
+  dutyStation: string;
+  securityToken: string;
+  phone: string;
+}
+
+export interface VolunteerSession {
+  isAuthenticated: boolean;
+  registeredId: string; // e.g. VOL-2026-IND-8841
+  name: string;
+  organization: string; // e.g. Indian Red Cross Society, Civil Defence, SEEDS
+  specialization: string;
+  sector: string;
+  badgeNumber: string;
+  phone: string;
+  status: 'ACTIVE_FIELD' | 'STANDBY' | 'DEPLOYED';
+}
+
+export interface DisasterRecoveryIncident {
+  id: string;
+  title: string;
+  hindiTitle: string;
+  date: string;
+  location: string;
+  state: string;
+  type: 'landslide' | 'flood' | 'cyclone' | 'glacial_lake' | 'cloudburst';
+  imageUrl: string;
+  imageCaption: string;
+  secondaryImageUrl?: string;
+  secondaryImageCaption?: string;
+  fallbackImageUrl?: string;
+  description: string;
+  peopleAffected: number;
+  peopleRescued: number;
+  reliefEfficiency: number; // percentage
+  fatalitiesPrevented: number;
+  recoveryStage: 'Active Search & Evacuation' | 'Stabilization & Bailey Bridge' | 'Rehabilitation & Housing' | 'Infrastructure Restored';
+  keyDeployments: string[];
+  operationalSummary: string;
+}
+
+

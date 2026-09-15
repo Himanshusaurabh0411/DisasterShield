@@ -83,8 +83,8 @@ export function DemoControlBar() {
             className="mb-2 p-3.5 rounded-md border border-slate-300 bg-white shadow-xl space-y-2.5 w-64 text-slate-900"
           >
             <div className="flex items-center justify-between border-b border-slate-200 pb-2 text-slate-800 font-bold text-[11px] uppercase tracking-wider">
-              <span>NDMA Simulation Console</span>
-              <span className="text-[#138808] font-bold">Active</span>
+              <span>DisasterShield Simulation Console</span>
+              <span className="text-emerald-700 font-bold">Active</span>
             </div>
 
             <div className="space-y-1.5">

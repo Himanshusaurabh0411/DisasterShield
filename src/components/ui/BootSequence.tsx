@@ -55,19 +55,18 @@ export function BootSequence() {
           </div>
 
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
-              भारत सरकार | Government of India
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              DisasterShield Open Network
             </p>
             <h1 className="text-lg font-bold text-[#003366]">
-              राष्ट्रीय आपदा प्रबंधन प्राधिकरण
+              Crisis Response Platform
             </h1>
-            <p className="text-xs text-slate-700 font-medium">
-              National Disaster Management Authority (NDMA)
+            <p className="text-xs text-slate-600 font-medium">
+              Community Resilience & Disaster Management System
             </p>
           </div>
 
-          {/* Tricolor line */}
-          <div className="tricolor-bar rounded-full h-1 w-32" />
+          <div className="h-1 w-24 bg-[#FF9933] rounded-full" />
 
           {/* Progress Bar */}
           <div className="w-full space-y-2 pt-2">

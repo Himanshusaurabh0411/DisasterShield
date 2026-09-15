@@ -96,6 +96,26 @@ export function IncidentDrawer({
 
               {/* Drawer Body */}
               <div className="p-6 overflow-y-auto flex-1 space-y-5 text-slate-900">
+                {/* Authentic Incident Photo Evidence */}
+                {incident.imageUrl && (
+                  <div className="relative h-44 sm:h-48 rounded-xl overflow-hidden border border-slate-200 bg-slate-900 shadow-xs">
+                    <img
+                      src={incident.imageUrl}
+                      alt={incident.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1 rounded-md bg-black/80 text-white text-[11px] font-semibold backdrop-blur-xs flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <Activity className="h-3.5 w-3.5 text-[#FF9933]" />
+                        <span>Verified Field Imagery</span>
+                      </span>
+                      <span className="text-amber-300 font-bold uppercase text-[10px]">
+                        {disasterTypeLabels[incident.disasterType]}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Situation summary */}
                 <div className="space-y-1.5">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500">

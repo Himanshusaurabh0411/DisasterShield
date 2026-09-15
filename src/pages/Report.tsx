@@ -30,22 +30,22 @@ import { LocationCapture } from '@/components/emergency/LocationCapture';
 import { MediaUpload } from '@/components/emergency/MediaUpload';
 import { SubmissionSuccess } from '@/components/emergency/SubmissionSuccess';
 import { AIScreeningPanel } from '@/components/emergency/AIScreeningPanel';
-import { DisasterType, PriorityLevel, DisasterReport, Location, MediaFile } from '@/types';
+import { DisasterType, PriorityLevel, DisasterReport, Location, MediaFile, SOSAlert } from '@/types';
 import { generateTrackingId, generateReportId, generateAIScore } from '@/services/mockReports';
 import { disasterTypeLabels } from '@/data/incidents';
 
-const DISASTER_OPTIONS: Array<{ type: DisasterType; label: string; labelHi: string; icon: string }> = [
-  { type: 'flood', label: 'Flood / Water Rise', labelHi: 'बाढ़ / जलभराव', icon: '🌊' },
-  { type: 'fire', label: 'Building Fire / Wildfire', labelHi: 'आग / अग्निकांड', icon: '🔥' },
-  { type: 'earthquake', label: 'Earthquake / Tremor', labelHi: 'भूकंप', icon: '🌍' },
-  { type: 'cyclone', label: 'Cyclone / High Winds', labelHi: 'चक्रवात / आंधी', icon: '🌀' },
-  { type: 'landslide', label: 'Landslide / Rockfall', labelHi: 'भूस्खलन', icon: '⛰️' },
-  { type: 'building_collapse', label: 'Building Collapse', labelHi: 'भवन ढहना', icon: '🏚️' },
-  { type: 'medical', label: 'Mass Medical Emergency', labelHi: 'चिकित्सा आपातकाल', icon: '🏥' },
-  { type: 'missing_person', label: 'Missing Person', labelHi: 'लापता व्यक्ति', icon: '🔍' },
-  { type: 'rescue_required', label: 'Immediate Rescue Needed', labelHi: 'तत्काल बचाव आवश्यक', icon: '🆘' },
-  { type: 'food_water', label: 'Food & Drinking Water', labelHi: 'राशन / पेयजल संकट', icon: '💧' },
-  { type: 'other', label: 'Other Disaster Event', labelHi: 'अन्य आपातकालीन स्थिति', icon: '⚠️' },
+const DISASTER_OPTIONS: Array<{ type: DisasterType; label: string; icon: string }> = [
+  { type: 'flood', label: 'Flood / Water Rise', icon: '🌊' },
+  { type: 'fire', label: 'Building Fire / Wildfire', icon: '🔥' },
+  { type: 'earthquake', label: 'Earthquake / Tremor', icon: '🌍' },
+  { type: 'cyclone', label: 'Cyclone / High Winds', icon: '🌀' },
+  { type: 'landslide', label: 'Landslide / Rockfall', icon: '⛰️' },
+  { type: 'building_collapse', label: 'Building Collapse', icon: '🏚️' },
+  { type: 'medical', label: 'Mass Medical Emergency', icon: '🏥' },
+  { type: 'missing_person', label: 'Missing Person', icon: '🔍' },
+  { type: 'rescue_required', label: 'Immediate Rescue Needed', icon: '🆘' },
+  { type: 'food_water', label: 'Food & Drinking Water', icon: '💧' },
+  { type: 'other', label: 'Other Disaster Event', icon: '⚠️' },
 ];
 
 const STEPS = [
@@ -57,7 +57,7 @@ const STEPS = [
 ];
 
 export function Report() {
-  const { isOnline, addNotification } = useApp();
+  const { isOnline, addNotification, triggerSOSAlert } = useApp();
   const { addReport } = useReports();
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -122,7 +122,7 @@ export function Report() {
       id: reportId,
       trackingId,
       disasterType,
-      description: description || 'Emergency report filed via NDMA DisasterShield portal.',
+      description: description || 'Emergency report filed via DisasterShield crisis response platform.',
       peopleAffected: Number(peopleAffected) || 1,
       injured: Number(injured) || 0,
       trapped: Number(trapped) || 0,
@@ -140,6 +140,48 @@ export function Report() {
     };
 
     addReport(newReport);
+
+    // Broadcast Targeted SOS Alert to Volunteer / Agency Portal
+    triggerSOSAlert({
+      id: `sos-${Date.now()}`,
+      trackingId,
+      disasterType,
+      title: `${disasterType.toUpperCase()} Emergency: ${location.area}`,
+      locationArea: location.area,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      priority,
+      peopleAffected: Number(peopleAffected) || 1,
+      injured: Number(injured) || 0,
+      trapped: Number(trapped) || 0,
+      timestamp: new Date().toLocaleTimeString(),
+      nearestUnits: [
+        {
+          id: 'unit-1',
+          name: 'NDRF Fast Incident Response Squad (Sector 4)',
+          type: 'Heavy Search & Rescue',
+          distanceKm: 1.2,
+          etaMinutes: 4,
+          capacity: 35,
+        },
+        {
+          id: 'unit-2',
+          name: 'State Disaster Response Boat Battalion',
+          type: 'Inflatable Rafts & Evacuation',
+          distanceKm: 2.3,
+          etaMinutes: 7,
+          capacity: 18,
+        },
+        {
+          id: 'unit-3',
+          name: 'Red Cross Mobile Trauma Ambulance',
+          type: 'Advanced Life Support Paramedics',
+          distanceKm: 2.9,
+          etaMinutes: 9,
+          capacity: 10,
+        },
+      ],
+    });
 
     addNotification({
       type: isOnline ? 'info' : 'warning',
@@ -174,33 +216,30 @@ export function Report() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6 text-slate-900 bg-white">
-      {/* Official Form Header */}
-      <div className="border border-slate-200 rounded-md bg-slate-50 p-6 space-y-2.5 shadow-xs">
+      {/* Emergency Form Header */}
+      <div className="border border-slate-200/90 rounded-2xl bg-gradient-to-b from-slate-50/80 to-white p-6 sm:p-7 space-y-2.5 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#003366] text-white">
-              FORM NDMA-01
+            <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#003366] text-white">
+              DISASTERSHIELD INTAKE
             </span>
-            <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
-              भारत सरकार | Government of India
+            <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              Emergency Response Network | Immediate Public Triage
             </span>
           </div>
           {!isOnline && (
-            <span className="text-xs font-bold px-3 py-1 rounded bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 self-start sm:self-auto">
+            <span className="text-xs font-bold px-3 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 self-start sm:self-auto">
               <WifiOff className="h-3.5 w-3.5" /> Offline Storage Active (Zero Data Loss)
             </span>
           )}
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          Citizen Emergency Intimation & Relief Requisition Form
+          Emergency Incident Report & Assistance Request
         </h1>
-        <p className="text-xs text-[#003366] font-semibold">
-          नागरिक आपातकालीन सूचना एवं आपदा राहत मांग प्रपत्र
-        </p>
         <p className="text-xs text-slate-600 leading-relaxed pt-1">
           Provide accurate ground information for immediate tactical prioritization. If cellular connectivity is severed,
-          the form will automatically save in local device memory and synchronize upon signal restoration.
+          the report will automatically save in local device storage and synchronize when connection resumes.
         </p>
       </div>
 
@@ -215,12 +254,12 @@ export function Report() {
                 key={step.id}
                 type="button"
                 onClick={() => setCurrentStep(step.id)}
-                className={`py-2 px-3 text-left rounded-md border transition-all cursor-pointer ${
+                className={`py-2 px-3 text-left rounded-xl border transition-all cursor-pointer ${
                   isCurrent
-                    ? 'border-[#003366] bg-blue-50 text-[#003366] font-bold shadow-xs ring-1 ring-[#003366]'
+                    ? 'border-[#003366] bg-blue-50/80 text-[#003366] font-bold shadow-xs ring-1 ring-[#003366]'
                     : isCompleted
                     ? 'border-slate-300 bg-slate-50 text-slate-800'
-                    : 'border-slate-200 bg-white text-slate-400'
+                    : 'border-slate-200 bg-white text-slate-400 hover:border-slate-300'
                 }`}
               >
                 <span className="text-[10px] block text-slate-500 font-semibold">STEP 0{step.id}</span>
@@ -239,8 +278,8 @@ export function Report() {
       </div>
 
       {/* Dynamic Step Content Card */}
-      <div className="rounded-md border border-slate-200 bg-white p-6 sm:p-8 space-y-6 shadow-xs">
-        <div className="border-b border-slate-200 pb-3 flex items-center justify-between">
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 space-y-6 shadow-xs">
+        <div className="border-b border-slate-200/90 pb-3 flex items-center justify-between">
           <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
             {STEPS[currentStep - 1].title}
           </h2>
@@ -267,15 +306,14 @@ export function Report() {
                       type="button"
                       key={opt.type}
                       onClick={() => setDisasterType(opt.type)}
-                      className={`p-3 rounded-md border text-left transition-all cursor-pointer ${
+                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                         disasterType === opt.type
-                          ? 'border-[#003366] bg-blue-50 text-[#003366] shadow-xs ring-1 ring-[#003366]'
-                          : 'border-slate-200 bg-slate-50/50 text-slate-800 hover:border-slate-300 hover:bg-slate-50'
+                          ? 'border-[#003366] bg-blue-50/80 text-[#003366] shadow-xs ring-1 ring-[#003366]'
+                          : 'border-slate-200/90 bg-slate-50/50 text-slate-800 hover:border-slate-300 hover:bg-slate-50'
                       }`}
                     >
                       <span className="text-2xl block mb-1">{opt.icon}</span>
                       <span className="text-xs font-bold block leading-tight text-slate-900">{opt.label}</span>
-                      <span className="text-[10px] text-slate-500 block mt-0.5">{opt.labelHi}</span>
                     </button>
                   ))}
                 </div>
@@ -291,13 +329,13 @@ export function Report() {
                       type="button"
                       key={lvl}
                       onClick={() => setPriority(lvl)}
-                      className={`py-2.5 px-3 rounded-md text-xs font-bold capitalize border transition-all cursor-pointer ${
+                      className={`py-2.5 px-3 rounded-xl text-xs font-bold capitalize border transition-all cursor-pointer ${
                         priority === lvl
                           ? lvl === 'critical'
-                            ? 'border-rose-600 bg-rose-50 text-rose-800 ring-1 ring-rose-600'
+                            ? 'border-rose-600 bg-rose-50 text-rose-800 ring-1 ring-rose-600 shadow-xs'
                             : lvl === 'high'
-                            ? 'border-amber-600 bg-amber-50 text-amber-900 ring-1 ring-amber-600'
-                            : 'border-[#003366] bg-blue-50 text-[#003366] ring-1 ring-[#003366]'
+                            ? 'border-amber-600 bg-amber-50 text-amber-900 ring-1 ring-amber-600 shadow-xs'
+                            : 'border-[#003366] bg-blue-50 text-[#003366] ring-1 ring-[#003366] shadow-xs'
                           : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                       }`}
                     >
@@ -422,7 +460,7 @@ export function Report() {
                 />
               </div>
 
-              <label className="flex items-start gap-3 cursor-pointer select-none bg-slate-50 p-4 rounded-md border border-slate-200 mt-4">
+              <label className="flex items-start gap-3 cursor-pointer select-none bg-slate-50/80 p-4 rounded-xl border border-slate-200/90 mt-4">
                 <input
                   type="checkbox"
                   checked={isConfirmed}
@@ -430,7 +468,7 @@ export function Report() {
                   className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#003366] focus:ring-[#003366]"
                 />
                 <span className="text-xs text-slate-700 leading-relaxed font-medium">
-                  I hereby declare that this intimation represents an authentic emergency event. I acknowledge that filing false disaster alarms is an offence under Section 54 of the Disaster Management Act, 2005.
+                  I hereby confirm that this intimation represents an authentic emergency event to ensure immediate dispatch by emergency coordinators and field response units.
                 </span>
               </label>
             </motion.div>
@@ -445,13 +483,13 @@ export function Report() {
               exit={{ opacity: 0, y: -8 }}
               className="space-y-5"
             >
-              <div className="p-5 rounded-md border border-slate-200 bg-slate-50 space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+              <div className="p-5 rounded-xl border border-slate-200/90 bg-slate-50/80 space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-200/90 pb-2.5">
                   <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">
-                    Intimation Summary Audit
+                    Incident Summary Audit
                   </span>
-                  <span className="text-xs font-mono font-bold px-2 py-0.5 bg-blue-100 text-[#003366] rounded border border-blue-200">
-                    PENDING SUBMISSION
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 bg-blue-100 text-[#003366] rounded-md border border-blue-200">
+                    PENDING TRANSMISSION
                   </span>
                 </div>
 
@@ -474,7 +512,7 @@ export function Report() {
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-200 text-xs">
+                <div className="pt-3 border-t border-slate-200/90 text-xs">
                   <span className="text-slate-500 block text-[11px] font-semibold">Target Geographic Coordinates & Area</span>
                   <p className="font-bold text-slate-900 mt-0.5">{location.area}</p>
                   <p className="text-[11px] text-slate-500 font-mono">LAT: {location.latitude} | LON: {location.longitude}</p>
@@ -482,21 +520,21 @@ export function Report() {
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed">
-                Clicking the button below generates an official NDMA tracking docket and transmits all telemetry to the
-                nearest district Emergency Operations Centre.
+                Clicking the button below generates a DisasterShield tracking docket and transmits all telemetry to
+                the central crisis coordination desk and frontline rescue teams.
               </p>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* Step Navigation Controls */}
-        <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+        <div className="flex items-center justify-between pt-4 border-t border-slate-200/90">
           {currentStep > 1 ? (
             <Button
               type="button"
               variant="outline"
               onClick={handlePrev}
-              className="gap-2 border-slate-300 text-slate-700 rounded-md text-xs font-semibold cursor-pointer"
+              className="gap-2 border-slate-300 text-slate-700 rounded-xl text-xs font-semibold cursor-pointer hover:bg-slate-50"
             >
               <ArrowLeft className="h-4 w-4" /> Previous Step
             </Button>
@@ -507,9 +545,8 @@ export function Report() {
           {currentStep < 5 ? (
             <Button
               type="button"
-              variant="default"
               onClick={handleNext}
-              className="gap-2 text-xs font-bold rounded-md bg-[#003366] hover:bg-[#0A2540] text-white cursor-pointer shadow-xs"
+              className="gap-2 text-xs font-bold rounded-xl bg-[#003366] hover:bg-[#0A2540] text-white cursor-pointer shadow-xs transition-all hover:shadow-md"
             >
               Proceed to Step {currentStep + 1} <ArrowRight className="h-4 w-4" />
             </Button>
@@ -517,20 +554,19 @@ export function Report() {
             <Button
               type="button"
               size="lg"
-              variant="emergency"
               disabled={isSubmitting || !isConfirmed}
               onClick={handleSubmit}
-              className="gap-2 font-bold text-sm px-8 rounded-md shadow-xs bg-[#FF9933] hover:bg-[#E65100] text-slate-900 cursor-pointer"
+              className="gap-2 font-bold text-sm px-8 rounded-xl shadow-xs bg-[#FF9933] hover:bg-[#E65100] text-slate-900 cursor-pointer transition-all hover:shadow-md border border-amber-400/40"
             >
               {isSubmitting ? (
-                'Submitting Official Intimation...'
+                'Submitting Emergency Report...'
               ) : isOnline ? (
                 <>
-                  <Send className="h-4 w-4" /> Submit Official Emergency Intimation
+                  <Send className="h-4 w-4" /> Submit Emergency Report
                 </>
               ) : (
                 <>
-                  <WifiOff className="h-4 w-4" /> Save Docket Locally (Offline Storage)
+                  <WifiOff className="h-4 w-4" /> Save Report Locally (Offline Storage)
                 </>
               )}
             </Button>

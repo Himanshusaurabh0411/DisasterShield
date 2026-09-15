@@ -17,9 +17,9 @@ export function OfflineBanner() {
         >
           <div className="flex flex-wrap items-center gap-3 px-6 py-2.5 border-b border-amber-300 bg-amber-50 text-xs font-medium text-amber-900">
             <WifiOff className="h-4 w-4 shrink-0 text-amber-700" />
-            <span className="font-bold">OFFLINE MODE ACTIVE (ऑफलाइन मोड)</span>
+            <span className="font-bold">OFFLINE RESILIENCE ACTIVE:</span>
             <span className="text-amber-800">
-              Reports are saved securely in local storage and will sync to NDMA servers automatically when network returns.
+              Incident dossiers are cached safely in local storage and will automatically synchronize when network connectivity resumes.
             </span>
             {pendingSyncCount > 0 && (
               <span className="ml-auto flex items-center gap-1.5 font-bold text-amber-900 bg-amber-200 px-2 py-0.5 rounded">

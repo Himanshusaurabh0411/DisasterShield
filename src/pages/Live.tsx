@@ -17,7 +17,8 @@ import {
 import { StatCard } from '@/components/dashboard/StatCard';
 import { IncidentCard } from '@/components/reports/IncidentCard';
 import { IncidentDetailModal } from '@/components/reports/IncidentDetailModal';
-import { GlobeFallback } from '@/components/globe/GlobeFallback';
+import { LiveEmergencyMap } from '@/components/map/LiveEmergencyMap';
+import { Geospatial3DMap } from '@/components/map/Geospatial3DMap';
 import { mockIncidents, disasterTypeLabels } from '@/data/incidents';
 import { Incident, DisasterType, PriorityLevel, IncidentStatus } from '@/types';
 import { Input } from '@/components/ui/input';
@@ -29,7 +30,7 @@ export function Live() {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
-  const [showMap, setShowMap] = useState(true);
+  const [viewMode, setViewMode] = useState<'3d' | '2d' | 'grid'>('3d');
 
   // Filtered Incidents
   const filteredIncidents = useMemo(() => {
@@ -56,43 +57,56 @@ export function Live() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-slate-900 bg-white">
-      {/* Official Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border border-slate-200 rounded-md bg-slate-50 p-6 shadow-xs">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border border-slate-200/90 rounded-2xl bg-gradient-to-b from-slate-50/80 to-white p-6 shadow-xs">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="flex h-2.5 w-2.5 rounded-full bg-rose-600 animate-pulse" />
             <span className="text-xs font-bold tracking-wider text-rose-700 uppercase">
-              24x7 Real-Time Situation Monitor (सक्रिय आपदा निगरानी)
+              Real-Time Crisis Intelligence Network
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            National Incident Grid & GIS Situation Desk
+            Live Emergency Grid & Interactive Map
           </h1>
           <p className="text-xs text-slate-600">
-            Real-time geospatial tracking of emergencies, priority triage, and deployed NDRF/SDRF response units.
+            Real-time geospatial tracking of emergencies, priority triage, and deployed community response squads.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
-            variant={showMap ? 'default' : 'outline'}
             size="sm"
-            onClick={() => setShowMap(true)}
-            className={`gap-2 rounded-md font-bold text-xs cursor-pointer ${
-              showMap ? 'bg-[#003366] text-white hover:bg-[#0A2540]' : 'border-slate-300 text-slate-700 bg-white'
+            onClick={() => setViewMode('3d')}
+            className={`gap-2 rounded-xl font-bold text-xs cursor-pointer transition-all ${
+              viewMode === '3d'
+                ? 'bg-[#003366] text-white hover:bg-[#0A2540] shadow-xs'
+                : 'border border-slate-300 text-slate-700 bg-white hover:bg-slate-50'
             }`}
           >
-            <Globe2 className="h-4 w-4" /> Tactical Map View
+            <Layers className="h-4 w-4 text-amber-400" /> 3D WebGL Terrain
           </Button>
           <Button
-            variant={!showMap ? 'default' : 'outline'}
             size="sm"
-            onClick={() => setShowMap(false)}
-            className={`gap-2 rounded-md font-bold text-xs cursor-pointer ${
-              !showMap ? 'bg-[#003366] text-white hover:bg-[#0A2540]' : 'border-slate-300 text-slate-700 bg-white'
+            onClick={() => setViewMode('2d')}
+            className={`gap-2 rounded-xl font-bold text-xs cursor-pointer transition-all ${
+              viewMode === '2d'
+                ? 'bg-[#003366] text-white hover:bg-[#0A2540] shadow-xs'
+                : 'border border-slate-300 text-slate-700 bg-white hover:bg-slate-50'
             }`}
           >
-            <ListFilter className="h-4 w-4" /> Incident Grid Only
+            <Globe2 className="h-4 w-4" /> 2D Map View
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => setViewMode('grid')}
+            className={`gap-2 rounded-xl font-bold text-xs cursor-pointer transition-all ${
+              viewMode === 'grid'
+                ? 'bg-[#003366] text-white hover:bg-[#0A2540] shadow-xs'
+                : 'border border-slate-300 text-slate-700 bg-white hover:bg-slate-50'
+            }`}
+          >
+            <ListFilter className="h-4 w-4" /> Grid Only
           </Button>
         </div>
       </div>
@@ -128,7 +142,7 @@ export function Live() {
           value={activeResponders}
           icon={Shield}
           color="blue"
-          trend="NDRF, SDRF & Medical"
+          trend="Volunteer squads & medical"
           trendUp={false}
         />
         <StatCard
@@ -136,34 +150,49 @@ export function Live() {
           value={awaitingVerification}
           icon={Activity}
           color="purple"
-          trend="Duty Officer desk"
+          trend="Triage Desk"
           trendUp={false}
         />
       </div>
 
-      {/* Map Visualization Preview Section */}
-      {showMap && (
-        <div className="rounded-md border border-slate-300 bg-white p-4 space-y-3 shadow-xs">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+      {/* Interactive Map Section (3D WebGL or 2D CartoDB) */}
+      {viewMode !== 'grid' && (
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-4 space-y-3 shadow-xs">
+          <div className="flex items-center justify-between border-b border-slate-200/90 pb-2.5">
             <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
               <Layers className="h-4 w-4 text-[#003366]" />
-              Geospatial Disaster Projection Map (भू-स्थानिक मानचित्र)
+              {viewMode === '3d'
+                ? '3D WebGL Topographical Terrain & Volumetric Hotspots'
+                : 'Interactive Emergency Hotspot Map'}
             </span>
             <span className="text-xs font-medium text-slate-500">
-              Interactive Hotspots (Click marker to view incident dossier)
+              {viewMode === '3d'
+                ? 'Interactive 3D LiDAR Mesh & Glowing Severity Pillars'
+                : 'Live 2D Pins (Click markers to inspect incident dossiers)'}
             </span>
           </div>
-          <div className="h-[400px] rounded-md overflow-hidden border border-slate-200 bg-slate-100">
-            <GlobeFallback
-              incidents={filteredIncidents}
-              onIncidentClick={(inc) => setSelectedIncident(inc)}
-            />
+          <div className="h-[480px] rounded-xl overflow-hidden border border-slate-200/90 bg-[#06111f]">
+            {viewMode === '3d' ? (
+              <Geospatial3DMap
+                incidents={filteredIncidents}
+                onIncidentClick={(inc: Incident) => setSelectedIncident(inc)}
+                selectedIncidentId={selectedIncident?.id}
+                height="480px"
+              />
+            ) : (
+              <LiveEmergencyMap
+                incidents={filteredIncidents}
+                onIncidentSelect={(inc: Incident) => setSelectedIncident(inc)}
+                selectedIncidentId={selectedIncident?.id}
+                height="480px"
+              />
+            )}
           </div>
         </div>
       )}
 
       {/* Comprehensive Filter Toolbar */}
-      <div className="rounded-md border border-slate-200 bg-slate-50 p-4 space-y-3 shadow-xs">
+      <div className="rounded-2xl border border-slate-200/90 bg-slate-50/80 p-4 space-y-3 shadow-xs">
         <div className="flex flex-col md:flex-row gap-2.5">
           {/* Search bar */}
           <div className="relative flex-1">
@@ -172,7 +201,7 @@ export function Live() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by city (Bhopal, Indore, Delhi, Puri...), area, or Tracking Code..."
-              className="pl-10 h-10 text-xs rounded-md bg-white border-slate-300 text-slate-900"
+              className="pl-10 h-10 text-xs rounded-xl bg-white border-slate-300 text-slate-900"
             />
           </div>
 
@@ -180,7 +209,7 @@ export function Live() {
           <select
             value={selectedSeverity}
             onChange={(e) => setSelectedSeverity(e.target.value)}
-            className="h-10 rounded-md border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#003366]"
+            className="h-10 rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#003366]"
           >
             <option value="all">Severity: All Levels</option>
             <option value="critical">Critical</option>
@@ -193,7 +222,7 @@ export function Live() {
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className="h-10 rounded-md border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#003366]"
+            className="h-10 rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#003366]"
           >
             <option value="all">Category: All Disasters</option>
             {Object.entries(disasterTypeLabels).map(([key, label]) => (
@@ -207,7 +236,7 @@ export function Live() {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="h-10 rounded-md border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#003366]"
+            className="h-10 rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#003366]"
           >
             <option value="all">Status: All Statuses</option>
             <option value="active">Active</option>
@@ -230,7 +259,7 @@ export function Live() {
                 setSelectedType('all');
                 setSelectedStatus('all');
               }}
-              className="text-xs text-slate-700 border-slate-300 bg-white hover:bg-slate-100 rounded-md h-10 px-3 cursor-pointer"
+              className="text-xs text-slate-700 border-slate-300 bg-white hover:bg-slate-100 rounded-xl h-10 px-3 cursor-pointer"
             >
               Reset Filters
             </Button>
@@ -248,7 +277,7 @@ export function Live() {
 
       {/* Incident Cards Grid */}
       {filteredIncidents.length === 0 ? (
-        <div className="rounded-md border border-slate-200 bg-slate-50 p-12 text-center space-y-2">
+        <div className="rounded-2xl border border-slate-200/90 bg-slate-50/80 p-12 text-center space-y-2">
           <p className="text-sm font-bold text-slate-900 uppercase tracking-wider">
             No Emergency Incidents Match The Specified Filter Parameters
           </p>

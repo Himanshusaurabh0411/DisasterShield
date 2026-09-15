@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ShieldAlert,
@@ -18,7 +19,10 @@ import {
   Layers,
   MapPin,
   Clock,
-  Filter
+  Filter,
+  Lock,
+  LogOut,
+  KeyRound
 } from 'lucide-react';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { PriorityBadge } from '@/components/reports/PriorityBadge';
@@ -29,6 +33,7 @@ import { mockResources } from '@/data/resources';
 import { ResourceBar } from '@/components/dashboard/ResourceBar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { AdminAuthModal } from '@/components/auth/AdminAuthModal';
 import { useApp } from '@/context/AppContext';
 import { useReports } from '@/hooks/useReports';
 import { DisasterReport } from '@/types';
@@ -39,7 +44,9 @@ interface AdminQueueItem extends DisasterReport {
 }
 
 export function Admin() {
-  const { addNotification } = useApp();
+  const { adminSession, logoutAdmin, addNotification } = useApp();
+  const navigate = useNavigate();
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const { reports } = useReports();
   const [activeTab, setActiveTab] = useState<'verification' | 'dashboard' | 'resources' | 'settings'>('verification');
 
@@ -131,29 +138,108 @@ export function Admin() {
   const criticalCount = queueItems.filter((i) => i.priority === 'critical').length;
   const activeRespondersCount = mockResponders.filter((r) => r.availability !== 'offline').length;
 
+  // STRICT AUTHENTICATION SEPARATION: Protect Dispatch Verification Desk
+  if (!adminSession?.isAuthenticated) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center space-y-6 bg-white text-slate-900">
+        <div className="h-20 w-20 mx-auto rounded-3xl bg-cyan-950/20 border-2 border-cyan-500/60 flex items-center justify-center text-cyan-600 shadow-md">
+          <Lock className="h-10 w-10 text-[#003366]" />
+        </div>
+        <div className="space-y-2 max-w-xl mx-auto">
+          <span className="text-xs font-bold text-[#FF9933] uppercase tracking-wider block">
+            प्रतिबंधित व्यवस्थापक नियंत्रण कक्ष
+          </span>
+          <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
+            System Admin Portal Required
+          </h1>
+          <p className="text-sm text-slate-600 leading-relaxed">
+            This verification and triage desk is strictly restricted to certified Emergency Operations Center (EOC) Dispatch Coordinators. Authorization requires a verified Coordinator ID and Master Dispatch Token.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <Button
+            size="lg"
+            onClick={() => setIsAdminModalOpen(true)}
+            className="gap-2 bg-[#003366] hover:bg-[#002244] text-white font-bold px-8 h-12 rounded-xl shadow-xs cursor-pointer"
+          >
+            <Lock className="h-5 w-5 text-cyan-400" />
+            <span>Authenticate as Dispatch Coordinator / समन्वयक प्रवेश</span>
+          </Button>
+
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => navigate('/')}
+            className="border-slate-300 text-slate-700 hover:bg-slate-50 h-12 rounded-xl font-semibold cursor-pointer"
+          >
+            Back to Public Portal
+          </Button>
+        </div>
+
+        {/* Informative credentials reminder */}
+        <div className="mt-8 p-4 rounded-xl border border-slate-200 bg-slate-50 text-left max-w-lg mx-auto">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#003366] uppercase mb-1">
+            <KeyRound className="h-4 w-4 text-[#FF9933]" />
+            Coordinator Credentials Guidance
+          </div>
+          <p className="text-xs text-slate-600">
+            Click <strong>Authenticate</strong> to open the Dispatch Coordinator portal. You can select the pre-authorized credentials for <strong>Chief Officer Devendra Sen</strong> or <strong>Meera Joshi</strong> for 1-click verification.
+          </p>
+        </div>
+
+        <AdminAuthModal
+          isOpen={isAdminModalOpen}
+          onClose={() => setIsAdminModalOpen(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-slate-900 bg-white">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border border-slate-200 rounded-md bg-slate-50 p-6 shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border border-slate-200/90 rounded-2xl bg-gradient-to-b from-slate-50/80 to-white p-6 shadow-xs">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="flex h-2.5 w-2.5 rounded-full bg-[#003366] animate-pulse" />
             <span className="text-xs font-bold tracking-wider text-[#003366] uppercase">
-              Emergency Operations Command (NEOC) Administration
+              DisasterShield Coordination Operations
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Duty Officer Verification & Triage Desk
+            Incident Verification & Triage Desk
           </h1>
           <p className="text-xs text-slate-600">
-            ड्यूटी अधिकारी सत्यापन एवं प्राथमिकता निर्धारण डेस्क — Authenticate citizen reports, filter false alarms, and override disaster priorities.
+            Verify ground reports, filter duplicate alarms, and coordinate rapid volunteer response dispatch.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-xs">
-            Authority Level: EOC Duty Officer
-          </span>
+        {/* Authenticated Coordinator Profile & Signout */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="rounded-xl border border-cyan-300 bg-cyan-50/90 px-3.5 py-2 text-xs text-left shadow-xs">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-extrabold text-cyan-950">{adminSession.name}</span>
+              <span className="px-1.5 py-0.5 rounded bg-cyan-200 text-cyan-900 text-[10px] font-bold">
+                {adminSession.clearance}
+              </span>
+            </div>
+            <div className="text-[11px] text-cyan-800 font-mono mt-0.5">
+              {adminSession.coordinatorId} • {adminSession.dutyStation}
+            </div>
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={logoutAdmin}
+            className="h-9 px-3 text-xs font-bold border-rose-300 text-rose-700 hover:bg-rose-50 cursor-pointer"
+            title="End Duty Shift"
+          >
+            <LogOut className="h-3.5 w-3.5 mr-1" />
+            End Shift
+          </Button>
         </div>
       </div>
 
@@ -188,7 +274,7 @@ export function Admin() {
           value={activeRespondersCount}
           icon={ShieldAlert}
           color="green"
-          trend="NDRF & SDRF squads"
+          trend="Volunteer squads"
           trendUp={false}
         />
         <StatCard
@@ -202,17 +288,17 @@ export function Admin() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+      <div className="flex items-center gap-2 border-b border-slate-200/90 pb-2">
         {[
           { id: 'verification', label: `Verification Desk (${pendingCount} Pending)` },
-          { id: 'dashboard', label: 'EOC Logistics Telemetry' },
-          { id: 'resources', label: 'Buffer Relief Inventory' },
-          { id: 'settings', label: 'System Architecture' },
+          { id: 'dashboard', label: 'Crisis Telemetry' },
+          { id: 'resources', label: 'Relief Inventory' },
+          { id: 'settings', label: 'Architecture & Standards' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`px-4 py-2 text-xs font-bold rounded-md transition-all cursor-pointer ${
+            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activeTab === tab.id
                 ? 'bg-[#003366] text-white shadow-xs'
                 : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
@@ -227,8 +313,8 @@ export function Admin() {
       {activeTab === 'verification' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between text-xs text-slate-500">
-            <span className="font-bold uppercase tracking-wider text-slate-800">Incoming Field Intimations / सत्यापन कतार</span>
-            <span>Verify authenticity, reject noise, or escalate to National Taskforce</span>
+            <span className="font-bold uppercase tracking-wider text-slate-800">Incoming Incident Reports</span>
+            <span>Verify authenticity, reject noise, or escalate priority</span>
           </div>
 
           <div className="space-y-4">
@@ -242,20 +328,20 @@ export function Admin() {
                 <motion.div
                   key={item.id}
                   layout
-                  className={`rounded-md border p-5 sm:p-6 transition-all shadow-xs ${
+                  className={`rounded-2xl border p-5 sm:p-6 transition-all shadow-xs ${
                     isRejected
-                      ? 'border-slate-200 bg-slate-50 opacity-60'
+                      ? 'border-slate-200/90 bg-slate-50/80 opacity-60'
                       : isEscalated
                       ? 'border-rose-300 bg-rose-50/40 ring-1 ring-rose-200'
                       : isVerified
                       ? 'border-emerald-300 bg-emerald-50/40 ring-1 ring-emerald-200'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      : 'border-slate-200/90 bg-white hover:border-slate-300'
                   }`}
                 >
                   <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                     <div className="space-y-3 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs font-mono font-bold text-[#003366] bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-md">
+                        <span className="text-xs font-mono font-bold text-[#003366] bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-lg">
                           {item.trackingId}
                         </span>
                         <PriorityBadge priority={item.priority} />
@@ -263,7 +349,7 @@ export function Admin() {
                           {disasterTypeLabels[item.disasterType] || item.disasterType}
                         </span>
                         <span
-                          className={`text-xs font-bold px-2.5 py-0.5 rounded capitalize ${
+                          className={`text-xs font-bold px-2.5 py-0.5 rounded-lg capitalize ${
                             isPending
                               ? 'bg-amber-100 text-amber-900 border border-amber-300'
                               : isVerified
@@ -277,11 +363,11 @@ export function Admin() {
                         </span>
                       </div>
 
-                      <p className="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3.5 rounded-md border border-slate-200">
+                      <p className="text-xs text-slate-700 leading-relaxed bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
                         {item.description}
                       </p>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-600 bg-slate-50 p-2.5 rounded border border-slate-100">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-600 bg-slate-50/80 p-2.5 rounded-xl border border-slate-200/80">
                         <div className="flex items-center gap-1.5">
                           <MapPin className="h-3.5 w-3.5 text-rose-600 shrink-0" />
                           <span className="truncate">{item.location.area}</span>
@@ -312,10 +398,9 @@ export function Admin() {
                     <div className="flex flex-row lg:flex-col gap-2 shrink-0 pt-2 lg:pt-0">
                       <Button
                         size="sm"
-                        variant="default"
                         disabled={!isPending && isVerified}
                         onClick={() => handleVerify(item.id)}
-                        className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold gap-1.5 rounded-md cursor-pointer"
+                        className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold gap-1.5 rounded-xl cursor-pointer transition-all hover:shadow-xs"
                       >
                         <Check className="h-3.5 w-3.5" /> Approve & Dispatch
                       </Button>
@@ -325,16 +410,15 @@ export function Admin() {
                         variant="outline"
                         disabled={!isPending && isRejected}
                         onClick={() => handleReject(item.id)}
-                        className="border-slate-300 hover:border-rose-400 text-rose-700 text-xs font-semibold gap-1.5 rounded-md cursor-pointer"
+                        className="border-slate-300 hover:border-rose-400 text-rose-700 text-xs font-semibold gap-1.5 rounded-xl cursor-pointer"
                       >
                         <X className="h-3.5 w-3.5" /> Reject Duplicate
                       </Button>
 
                       <Button
                         size="sm"
-                        variant="emergency"
                         onClick={() => handleEscalate(item.id)}
-                        className="text-xs font-bold gap-1.5 rounded-md bg-[#FF9933] hover:bg-[#E65100] text-slate-900 cursor-pointer"
+                        className="text-xs font-bold gap-1.5 rounded-xl bg-[#FF9933] hover:bg-[#E65100] text-slate-900 cursor-pointer transition-all hover:shadow-xs border border-amber-400/40"
                       >
                         <ArrowUpRight className="h-3.5 w-3.5" /> Escalate Tier
                       </Button>
@@ -349,27 +433,27 @@ export function Admin() {
 
       {/* Tab 2: Command Overview */}
       {activeTab === 'dashboard' && (
-        <div className="rounded-md border border-slate-200 bg-white p-6 sm:p-8 space-y-4 text-slate-700 text-xs leading-relaxed shadow-xs">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 space-y-4 text-slate-700 text-xs leading-relaxed shadow-xs">
           <h3 className="text-base font-bold text-slate-900 tracking-tight">
             Central Crisis Telemetry & Spatial Cluster Analysis
           </h3>
           <p>
-            Operating under statutory mandates of the Disaster Management Act, 2005. Telemetry streams incorporate
-            ISRO satellite radar data, IMD Doppler precipitation forecasts, and citizen ground intimations.
+            DisasterShield telemetry streams synthesize open satellite data, meteorological radar forecasts,
+            and real-time ground reports to construct predictive risk surfaces.
           </p>
-          <div className="p-4 rounded-md bg-slate-50 border border-slate-200 space-y-2 text-slate-800 font-medium">
-            <div>&bull; Primary Geo-Cluster: Central Disaster Corridor (Bhopal, Indore, Jabalpur)</div>
-            <div>&bull; Coastal Monitoring Perimeter: Bay of Bengal Cyclone Warning Systems (Odisha, AP)</div>
-            <div>&bull; Seismic Sensor Array: Himalayan Thrust Faults & National Capital Region (Delhi NCR)</div>
+          <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 space-y-2 text-slate-800 font-medium">
+            <div>&bull; Primary Geo-Cluster: Central Crisis Corridor (Bhopal, Indore, Jabalpur)</div>
+            <div>&bull; Coastal Monitoring Perimeter: Cyclone & Storm Surge Alert Zones (Odisha, Andhra Coast)</div>
+            <div>&bull; Seismic Sensor Array: Regional Tremor Fault Zones & High-Density Urban Corridors</div>
           </div>
         </div>
       )}
 
       {/* Tab 3: Resource Reserves */}
       {activeTab === 'resources' && (
-        <div className="rounded-md border border-slate-200 bg-white p-6 sm:p-8 space-y-4 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 space-y-4 shadow-xs">
           <h3 className="text-base font-bold text-slate-900 tracking-tight">
-            National Warehouse Buffer & Strategic Relief Inventory
+            Regional Relief Material & Buffer Inventory
           </h3>
           <div className="space-y-2">
             {mockResources.map((res) => (
@@ -381,19 +465,19 @@ export function Admin() {
 
       {/* Tab 4: System Settings */}
       {activeTab === 'settings' && (
-        <div className="rounded-md border border-slate-200 bg-white p-6 sm:p-8 space-y-4 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 space-y-4 shadow-xs">
           <h3 className="text-base font-bold text-slate-900 tracking-tight">
-            System Technical Architecture & GIGW Compliance
+            System Technical Architecture & Open Standards
           </h3>
           <p className="text-xs text-slate-600">
-            Compliant with Guidelines for Indian Government Websites (GIGW) and National Informatics Centre (NIC) frameworks.
+            Engineered with open-access humanitarian standards, end-to-end auditability, and offline-first browser resilience.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 rounded-md bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs space-y-1">
               <span className="text-slate-500 uppercase font-bold text-[10px]">Local Data Resilience Engine</span>
               <p className="text-slate-900 font-bold">HTML5 localStorage + IndexedDB (Offline-First)</p>
             </div>
-            <div className="p-4 rounded-md bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 text-xs space-y-1">
               <span className="text-slate-500 uppercase font-bold text-[10px]">Automated Triage Pipeline</span>
               <p className="text-slate-900 font-bold">Multi-factor Geospatial Credibility Scoring</p>
             </div>

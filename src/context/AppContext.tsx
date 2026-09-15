@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { Notification } from '../types';
+import { Notification, ResponderProfile, SOSAlert, AdminSession, VolunteerSession } from '../types';
 import { useNotifications } from '../hooks/useNotifications';
 import { getSyncQueue, syncReports } from '../services/offlineStorage';
 import { runSyncAnimation, SyncState } from '../services/mockSync';
@@ -15,6 +15,27 @@ interface AppContextValue {
   markRead: (id: string) => void;
   markAllRead: () => void;
   pendingSyncCount: number;
+
+  // 1. System Admin Portal Session (Dispatch Coordinators)
+  adminSession: AdminSession | null;
+  loginAdmin: (session: AdminSession) => void;
+  logoutAdmin: () => void;
+
+  // 2. Volunteer / NGO Portal Session (Registered Volunteers)
+  volunteerSession: VolunteerSession | null;
+  loginVolunteer: (session: VolunteerSession) => void;
+  logoutVolunteer: () => void;
+
+  // Backwards compatibility aliases
+  isAuthenticatedResponder: boolean;
+  responderProfile: ResponderProfile | null;
+  loginResponder: (profile: ResponderProfile) => void;
+  logoutResponder: () => void;
+
+  // Targeted SOS Dispatch Alert State
+  activeSOSAlert: SOSAlert | null;
+  triggerSOSAlert: (alert: SOSAlert) => void;
+  dismissSOSAlert: () => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -28,6 +49,96 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     message: '',
   });
   const [pendingSyncCount, setPendingSyncCount] = useState(0);
+
+  // 1. Dedicated System Admin Portal Session (Dispatch Coordinators)
+  const [adminSession, setAdminSession] = useState<AdminSession | null>(() => {
+    const saved = localStorage.getItem('ds_admin_session');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
+
+  const loginAdmin = useCallback((session: AdminSession) => {
+    setAdminSession(session);
+    localStorage.setItem('ds_admin_session', JSON.stringify(session));
+  }, []);
+
+  const logoutAdmin = useCallback(() => {
+    setAdminSession(null);
+    localStorage.removeItem('ds_admin_session');
+  }, []);
+
+  // 2. Dedicated Volunteer / NGO Personnel Session (Registered Volunteers)
+  const [volunteerSession, setVolunteerSession] = useState<VolunteerSession | null>(() => {
+    const saved = localStorage.getItem('ds_volunteer_session');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
+
+  const loginVolunteer = useCallback((session: VolunteerSession) => {
+    setVolunteerSession(session);
+    localStorage.setItem('ds_volunteer_session', JSON.stringify(session));
+  }, []);
+
+  const logoutVolunteer = useCallback(() => {
+    setVolunteerSession(null);
+    localStorage.removeItem('ds_volunteer_session');
+  }, []);
+
+  // Backwards compatibility aliases mapped to volunteerSession
+  const isAuthenticatedResponder = volunteerSession?.isAuthenticated ?? false;
+  const responderProfile: ResponderProfile | null = volunteerSession
+    ? {
+        id: volunteerSession.registeredId,
+        name: volunteerSession.name,
+        role: volunteerSession.specialization,
+        agency: volunteerSession.organization,
+        badgeNumber: volunteerSession.badgeNumber,
+        clearanceLevel: 'LEVEL-2',
+        sector: volunteerSession.sector,
+        phone: volunteerSession.phone,
+      }
+    : null;
+
+  const loginResponder = useCallback((profile: ResponderProfile) => {
+    loginVolunteer({
+      isAuthenticated: true,
+      registeredId: profile.badgeNumber || profile.id,
+      name: profile.name,
+      organization: profile.agency,
+      specialization: profile.role,
+      sector: profile.sector,
+      badgeNumber: profile.badgeNumber,
+      phone: profile.phone,
+      status: 'ACTIVE_FIELD',
+    });
+  }, [loginVolunteer]);
+
+  const logoutResponder = useCallback(() => {
+    logoutVolunteer();
+  }, [logoutVolunteer]);
+
+  // Targeted SOS Dispatch Alert State
+  const [activeSOSAlert, setActiveSOSAlert] = useState<SOSAlert | null>(null);
+
+  const triggerSOSAlert = useCallback((alert: SOSAlert) => {
+    setActiveSOSAlert(alert);
+  }, []);
+
+  const dismissSOSAlert = useCallback(() => {
+    setActiveSOSAlert(null);
+  }, []);
 
   const { notifications, addNotification, markRead, markAllRead, unreadCount } = useNotifications();
 
@@ -91,6 +202,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     markRead,
     markAllRead,
     pendingSyncCount,
+    adminSession,
+    loginAdmin,
+    logoutAdmin,
+    volunteerSession,
+    loginVolunteer,
+    logoutVolunteer,
+    isAuthenticatedResponder,
+    responderProfile,
+    loginResponder,
+    logoutResponder,
+    activeSOSAlert,
+    triggerSOSAlert,
+    dismissSOSAlert,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

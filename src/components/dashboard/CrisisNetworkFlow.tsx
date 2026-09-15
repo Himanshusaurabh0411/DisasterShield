@@ -13,7 +13,6 @@ interface NodeData {
   id: string;
   step: string;
   label: string;
-  labelHi: string;
   sub: string;
   icon: React.ElementType;
   badge: string;
@@ -23,18 +22,16 @@ const NODES: NodeData[] = [
   {
     id: 'citizen',
     step: '01',
-    label: 'Citizen Intimation',
-    labelHi: 'नागरिक सूचना',
-    sub: 'Field emergency report submitted with GPS geotag',
+    label: 'Citizen Report',
+    sub: 'Crisis intimation submitted with exact GPS coordinates & photo evidence',
     icon: Users,
     badge: '18 Active Reports',
   },
   {
     id: 'report',
     step: '02',
-    label: 'Local Preservation',
-    labelHi: 'स्थानीय डेटा संग्रहण',
-    sub: 'Encrypted on-device caching during network failure',
+    label: 'Offline Preservation',
+    sub: 'Encrypted local browser storage guarantees zero report loss during blackouts',
     icon: FileText,
     badge: 'Zero Data Loss',
   },
@@ -42,35 +39,31 @@ const NODES: NodeData[] = [
     id: 'verification',
     step: '03',
     label: 'Triage Assessment',
-    labelHi: 'प्राथमिकता निर्धारण',
-    sub: 'EOC automated validation and casualty triage',
+    sub: 'Automated geospatial validation & casualty severity weighting',
     icon: ShieldCheck,
-    badge: 'Verified Credibility',
+    badge: 'Verified Severity',
   },
   {
     id: 'cloud',
     step: '04',
-    label: 'NIC Cloud Sync',
-    labelHi: 'क्लाउड सिंक',
-    sub: 'Background replication as signal coverage resumes',
+    label: 'Cloud Relay Sync',
+    sub: 'Instant background replication as soon as network coverage resumes',
     icon: Cloud,
-    badge: 'Central Telemetry',
+    badge: 'Instant Sync',
   },
   {
     id: 'responders',
     step: '05',
     label: 'Tactical Dispatch',
-    labelHi: 'राहत दल प्रेषण',
-    sub: 'Nearest NDRF, SDRF & medical battalion assigned',
+    sub: 'Nearest specialized volunteer, medical, and rescue squads mobilized',
     icon: Truck,
-    badge: '14 Units Mobilized',
+    badge: '14 Units Active',
   },
   {
     id: 'rescue',
     step: '06',
     label: 'Relief & Resolution',
-    labelHi: 'राहत एवं समाधान',
-    sub: 'Victim rescue, medical triage & incident closure',
+    sub: 'Community evacuation, first aid triage, food distribution & closure',
     icon: HeartHandshake,
     badge: 'Community Safe',
   },
@@ -87,30 +80,30 @@ export function CrisisNetworkFlow() {
   }, []);
 
   return (
-    <div className="rounded-md border border-slate-200 bg-white p-6 sm:p-8 space-y-6 shadow-xs">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-5">
+    <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-5">
         <div>
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-[#003366]" />
             <span className="text-xs font-bold text-[#003366] uppercase tracking-wider">
-              NDMA Standard Operating Procedure (SOP)
+              Humanitarian Response Architecture
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
-            6-Stage National Disaster Response Pipeline
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
+            6-Stage Community Emergency Response Pipeline
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">
-            आपदा प्रतिक्रिया मानक संचालन प्रक्रिया — Citizen to Command Center Workflow
+            End-to-End Coordination — From offline citizen distress intimation to field volunteer arrival
           </p>
         </div>
-        <div className="text-xs text-slate-600 flex items-center gap-2 font-medium bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-md self-start md:self-auto">
-          <span className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
+        <div className="text-xs text-slate-600 flex items-center gap-2 font-semibold bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-xl self-start md:self-auto shadow-xs">
+          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>Active Pipeline: Stage {activeStep + 1} of 6</span>
         </div>
       </div>
 
-      {/* 6 Steps Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+      {/* 6 Steps Grid with Softly Rounded Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
         {NODES.map((node, index) => {
           const Icon = node.icon;
           const isActive = index === activeStep;
@@ -118,27 +111,27 @@ export function CrisisNetworkFlow() {
           return (
             <motion.div
               key={node.id}
-              className={`relative rounded-md border p-4 flex flex-col justify-between transition-all duration-200 ${
+              className={`relative rounded-2xl border p-4 flex flex-col justify-between transition-all duration-300 ${
                 isActive
-                  ? 'border-[#003366] bg-blue-50/50 shadow-sm ring-1 ring-[#003366]'
-                  : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-300'
+                  ? 'border-[#003366] bg-blue-50/60 shadow-md ring-2 ring-[#003366]/20 -translate-y-1'
+                  : 'border-slate-200/90 bg-slate-50/60 hover:bg-slate-50 hover:border-slate-300 shadow-xs'
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`text-xs font-bold ${isActive ? 'text-[#003366]' : 'text-slate-500'}`}>
+                  <span className={`text-xs font-extrabold tracking-wider ${isActive ? 'text-[#003366]' : 'text-slate-400'}`}>
                     STAGE {node.step}
                   </span>
                   {isActive && (
-                    <span className="h-2 w-2 rounded-full bg-[#FF9933]" />
+                    <span className="h-2 w-2 rounded-full bg-[#FF9933] animate-ping" />
                   )}
                 </div>
 
                 <div
-                  className={`h-10 w-10 rounded-md flex items-center justify-center border mb-2.5 ${
+                  className={`h-11 w-11 rounded-xl flex items-center justify-center border mb-3 transition-colors ${
                     isActive
-                      ? 'bg-[#003366] text-white border-[#003366]'
-                      : 'bg-white text-slate-700 border-slate-200'
+                      ? 'bg-[#003366] text-white border-[#003366] shadow-sm'
+                      : 'bg-white text-slate-700 border-slate-200 shadow-xs'
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -147,9 +140,6 @@ export function CrisisNetworkFlow() {
                 <h4 className="text-sm font-bold text-slate-900 leading-tight">
                   {node.label}
                 </h4>
-                <p className="text-[11px] text-[#003366] font-medium mt-0.5">
-                  {node.labelHi}
-                </p>
                 <p className="text-xs text-slate-600 leading-relaxed mt-1.5">
                   {node.sub}
                 </p>
@@ -157,10 +147,10 @@ export function CrisisNetworkFlow() {
 
               <div className="pt-3 mt-3 border-t border-slate-200/80">
                 <span
-                  className={`text-[11px] font-semibold px-2 py-0.5 rounded block text-center truncate ${
+                  className={`text-[11px] font-bold px-2 py-0.5 rounded-lg block text-center truncate ${
                     isActive
                       ? 'bg-blue-100 text-[#003366] border border-blue-200'
-                      : 'bg-slate-100 text-slate-700 border border-slate-200'
+                      : 'bg-white text-slate-600 border border-slate-200'
                   }`}
                 >
                   {node.badge}
@@ -175,15 +165,15 @@ export function CrisisNetworkFlow() {
       <div className="space-y-1.5 pt-2">
         <div className="h-2 w-full bg-slate-100 border border-slate-200 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#003366] via-[#FF9933] to-[#138808] rounded-full"
+            className="h-full bg-gradient-to-r from-[#003366] via-[#FF9933] to-emerald-600 rounded-full"
             animate={{ width: `${((activeStep + 1) / NODES.length) * 100}%` }}
             transition={{ duration: 0.4 }}
           />
         </div>
-        <div className="flex justify-between text-xs text-slate-500 font-medium">
+        <div className="flex justify-between text-xs text-slate-500 font-semibold">
           <span>01. Ground Incident Ingestion</span>
           <span>04. Automated Cloud Relay</span>
-          <span>06. Rescue & Relief Concluded</span>
+          <span>06. Relief & Evacuation Concluded</span>
         </div>
       </div>
     </div>

@@ -24,51 +24,52 @@ export function About() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8 text-slate-900 bg-white">
-      {/* Official Header */}
-      <div className="border border-slate-200 rounded-md bg-slate-50 p-6 sm:p-8 space-y-3 text-center sm:text-left shadow-xs">
-        <div className="inline-flex items-center gap-2 rounded border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold text-[#003366]">
+      {/* Header */}
+      <div className="border border-slate-200/90 rounded-2xl bg-gradient-to-b from-slate-50/80 to-white p-6 sm:p-8 space-y-3 text-center sm:text-left shadow-xs">
+        <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1 text-xs font-bold text-[#003366]">
           <Shield className="h-3.5 w-3.5" />
-          <span>Statutory Mandate & Technical Architecture</span>
+          <span>Open Humanitarian Architecture & Civic-Tech Mission</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-          About DisasterShield National Portal
+          About DisasterShield
         </h1>
         <p className="text-xs text-[#003366] font-bold uppercase tracking-wider">
-          राष्ट्रीय आपदा प्रबंधन प्राधिकरण | National Disaster Management Authority
+          Open Crisis Response Network & Community Resilience Engine
         </p>
-        <p className="text-sm text-slate-700 max-w-3xl leading-relaxed pt-1">
-          A resilient, cloud-enabled disaster management platform built in strict conformance with the Disaster Management Act, 2005,
-          and National Informatics Centre (NIC) guidelines, engineered to maintain operational integrity even when local communications collapse.
+        <p className="text-sm text-slate-600 max-w-3xl leading-relaxed pt-1">
+          An independent, open-access disaster management platform engineered to connect impacted citizens,
+          volunteer rescue squads, and humanitarian coordinators with real-time situational awareness, offline-first data preservation,
+          and rapid resource dispatch.
         </p>
       </div>
 
-      {/* Statutory Mandate */}
-      <div className="rounded-md border border-slate-200 bg-white p-6 space-y-4 shadow-xs">
-        <h2 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2 border-b border-slate-200 pb-3">
+      {/* Humanitarian Model */}
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-6 space-y-4 shadow-xs">
+        <h2 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2 border-b border-slate-200/90 pb-3">
           <BookOpen className="h-5 w-5 text-[#003366]" />
-          Statutory Framework — Disaster Management Act, 2005
+          Three Pillars of Community Crisis Response
         </h2>
-        <p className="text-xs text-slate-700 leading-relaxed">
-          Enacted on 23 December 2005, the Disaster Management Act provides for the effective management of disasters and matters connected therewith.
-          DisasterShield operates as an integrated technological interface binding the three tiers of disaster response:
+        <p className="text-xs text-slate-600 leading-relaxed">
+          Inspired by open humanitarian mapping initiatives and crowdsourced crisis platforms, DisasterShield operates
+          across three coordinated response layers:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-          <div className="p-4 rounded-md bg-slate-50 border border-slate-200 space-y-1.5">
-            <span className="text-xs font-bold text-[#003366] block">1. National Level (NDMA)</span>
+          <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 space-y-1.5">
+            <span className="text-xs font-bold text-[#003366] block">1. Hyperlocal Ground Intel</span>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Headed by the Prime Minister of India. Formulates national policies, guidelines and superintends the National Disaster Response Force (NDRF).
+              Direct citizen reporting with zero-loss offline caching, GPS coordinates, and media uploads during communication outages.
             </p>
           </div>
-          <div className="p-4 rounded-md bg-slate-50 border border-slate-200 space-y-1.5">
-            <span className="text-xs font-bold text-amber-700 block">2. State Level (SDMA)</span>
+          <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 space-y-1.5">
+            <span className="text-xs font-bold text-amber-700 block">2. Triage & Verification Desk</span>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Headed by respective Chief Ministers. Oversees State Disaster Response Forces (SDRF) and mobilizes inter-district rescue logistics.
+              Automated duplicate filtering and volunteer duty coordinator verification to prevent cognitive overload and ensure urgent cases get prioritized.
             </p>
           </div>
-          <div className="p-4 rounded-md bg-slate-50 border border-slate-200 space-y-1.5">
-            <span className="text-xs font-bold text-emerald-700 block">3. District Level (DDMA)</span>
+          <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 space-y-1.5">
+            <span className="text-xs font-bold text-emerald-700 block">3. Squad & Resource Dispatch</span>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Headed by the District Magistrate / Collector. Operates as the frontline field execution arm deploying medical, shelter, and rescue units.
+              Dynamic matchmaking between verified emergency dockets and specialized rescue battalions, medical units, and relief distribution hubs.
             </p>
           </div>
         </div>
@@ -76,126 +77,126 @@ export function About() {
 
       {/* Core Architectural Pillars */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-slate-900 tracking-tight border-b border-slate-200 pb-2">
+        <h2 className="text-lg font-bold text-slate-900 tracking-tight border-b border-slate-200/90 pb-2">
           Core Resilience & Technological Pillars
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Pillar 1 */}
-          <div className="rounded-md border border-slate-200 bg-white p-5 space-y-2 shadow-xs">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-2 shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-amber-100 text-amber-800">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-800">
                 <WifiOff className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Offline-First Ingestion</h3>
-                <span className="text-[11px] text-slate-500 font-medium">Local Storage & PWA Service Workers</span>
+                <h3 className="text-sm font-bold text-slate-900">Zero-Loss Offline Caching</h3>
+                <span className="text-[11px] text-slate-500 font-medium">Local Storage & PWA Resilience</span>
               </div>
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
-              When cellular connectivity drops due to power grid or tower collapse, citizen intimations, GPS coordinates, and media evidence are cached in browser memory with verified tracking codes.
+              When cellular connectivity drops due to power grid failure or severed fiber backbones, citizen reports, GPS coordinates, and evidence are safely cached in browser memory with verifiable tracking codes.
             </p>
           </div>
 
           {/* Pillar 2 */}
-          <div className="rounded-md border border-slate-200 bg-white p-5 space-y-2 shadow-xs">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-2 shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-blue-100 text-[#003366]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-[#003366]">
                 <Cloud className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">NIC Automated Re-Sync</h3>
-                <span className="text-[11px] text-slate-500 font-medium">Fault-Tolerant Background Relay</span>
+                <h3 className="text-sm font-bold text-slate-900">Automated Background Sync</h3>
+                <span className="text-[11px] text-slate-500 font-medium">Fault-Tolerant Network Relay</span>
               </div>
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
-              As soon as a cellular signal or community Wi-Fi beacon is restored, queued dossiers are sequenced, compressed, and synchronized with central emergency servers automatically.
+              As soon as any cellular signal or Wi-Fi beacon is restored, queued dossiers are automatically compressed, sequenced, and synced with the crisis coordination network without requiring citizen re-entry.
             </p>
           </div>
 
           {/* Pillar 3 */}
-          <div className="rounded-md border border-slate-200 bg-white p-5 space-y-2 shadow-xs">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-2 shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-purple-100 text-purple-800">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-purple-800">
                 <Sparkles className="h-5 w-5" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-slate-900">Automated Triage Screening</h3>
-                <span className="text-[11px] text-slate-500 font-medium">Geospatial NLP & Credibility Weighting</span>
+                <span className="text-[11px] text-slate-500 font-medium">Geospatial Clustering & Credibility Scoring</span>
               </div>
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Automated computer vision and geospatial algorithms screen incoming citizen intimations for duplicate clusters and urgency weighting to prevent duty officer cognitive overload.
+              Spatial radius algorithms analyze incoming incident reports for duplicate clusters, casualty severity, and credibility weights to surface life-critical situations instantly.
             </p>
           </div>
 
           {/* Pillar 4 */}
-          <div className="rounded-md border border-slate-200 bg-white p-5 space-y-2 shadow-xs">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-2 shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-emerald-100 text-emerald-800">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800">
                 <HeartHandshake className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Battalion Dispatch Matching</h3>
-                <span className="text-[11px] text-slate-500 font-medium">Multi-Agency Rapid Mobilization</span>
+                <h3 className="text-sm font-bold text-slate-900">Volunteer Dispatch Matching</h3>
+                <span className="text-[11px] text-slate-500 font-medium">Multi-Squad Rapid Mobilization</span>
               </div>
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Maps validated incidents to the nearest specialized response units: NDRF flood rescue boats, SDRF structural collapse crews, paramedic ambulances, and emergency potable water tankers.
+              Maps validated incidents directly to available volunteer units: boat rescue teams, structural collapse squads, medical paramedics, and emergency potable water suppliers.
             </p>
           </div>
         </div>
       </div>
 
       {/* Production Integration Roadmap */}
-      <div className="rounded-md border border-slate-200 bg-slate-50 p-6 space-y-3 shadow-xs">
+      <div className="rounded-2xl border border-slate-200/90 bg-slate-50/80 p-6 space-y-3 shadow-xs">
         <h2 className="text-base font-bold text-slate-900 tracking-tight">
-          Phase 2 Integration & Government Infrastructure Roadmap
+          Open Architecture & Technology Ecosystem
         </h2>
         <p className="text-xs text-slate-600 leading-relaxed">
-          While Phase 1 provides the complete, production-grade frontend and offline synchronization architecture, the system is designed to plug directly into statutory national systems:
+          DisasterShield is engineered with open, interoperable protocols designed for seamless integration with civic and humanitarian tooling:
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-700 pt-1">
-          <div className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
+          <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80">
             <CheckCircle2 className="h-4 w-4 text-emerald-700 shrink-0" />
-            <span>PostgreSQL + PostGIS for spatial polygon radius matching</span>
+            <span>Interactive Leaflet & OpenStreetMap geospatial tiling</span>
           </div>
-          <div className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
+          <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80">
             <CheckCircle2 className="h-4 w-4 text-emerald-700 shrink-0" />
-            <span>C-DOT Common Alerting Protocol (CAP) national broadcast integration</span>
+            <span>Standardized CAP (Common Alerting Protocol) event feeds</span>
           </div>
-          <div className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
+          <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80">
             <CheckCircle2 className="h-4 w-4 text-emerald-700 shrink-0" />
-            <span>ISRO Bhuvan Disaster GIS satellite overlay pipelines</span>
+            <span>Encrypted local storage with automatic queue replay</span>
           </div>
-          <div className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
+          <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80">
             <CheckCircle2 className="h-4 w-4 text-emerald-700 shrink-0" />
-            <span>Emergency Response Support System (ERSS 112) direct telephony uplink</span>
+            <span>Emergency helplines (112 / 1078) fast-dial integrations</span>
           </div>
         </div>
       </div>
 
       {/* Emergency Helpline Contacts Box */}
-      <div className="rounded-md border border-slate-200 bg-white p-6 space-y-3 shadow-xs">
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-6 space-y-3 shadow-xs">
         <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
           <PhoneCall className="h-4 w-4 text-rose-700" />
-          National Emergency Helplines Directory (24x7)
+          Emergency Helplines Directory (24x7)
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div className="p-3 bg-slate-50 rounded border border-slate-200">
-            <span className="text-slate-500 block text-[11px] font-semibold">NDMA National Control Room</span>
+          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
+            <span className="text-slate-500 block text-[11px] font-semibold">Disaster Response Line</span>
             <span className="text-base font-extrabold text-rose-700">1078</span>
           </div>
-          <div className="p-3 bg-slate-50 rounded border border-slate-200">
-            <span className="text-slate-500 block text-[11px] font-semibold">National Emergency Number</span>
+          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
+            <span className="text-slate-500 block text-[11px] font-semibold">National Emergency</span>
             <span className="text-base font-extrabold text-[#003366]">112</span>
           </div>
-          <div className="p-3 bg-slate-50 rounded border border-slate-200">
-            <span className="text-slate-500 block text-[11px] font-semibold">Fire Emergency Brigade</span>
+          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
+            <span className="text-slate-500 block text-[11px] font-semibold">Fire Emergency Service</span>
             <span className="text-base font-extrabold text-amber-800">101</span>
           </div>
-          <div className="p-3 bg-slate-50 rounded border border-slate-200">
-            <span className="text-slate-500 block text-[11px] font-semibold">Ambulance & Trauma Relief</span>
+          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
+            <span className="text-slate-500 block text-[11px] font-semibold">Ambulance & Medical Aid</span>
             <span className="text-base font-extrabold text-emerald-700">108</span>
           </div>
         </div>
@@ -206,17 +207,17 @@ export function About() {
         <Button
           size="lg"
           onClick={() => navigate('/report')}
-          className="gap-2 bg-[#FF9933] hover:bg-[#E65100] text-slate-900 font-bold rounded-md cursor-pointer shadow-xs"
+          className="gap-2 bg-[#FF9933] hover:bg-[#E65100] text-slate-900 font-bold rounded-xl cursor-pointer shadow-xs transition-all hover:shadow-md border border-amber-400/40"
         >
-          File Emergency Report (FORM NDMA-01) <ArrowRight className="h-4 w-4" />
+          Report Emergency Now <ArrowRight className="h-4 w-4" />
         </Button>
         <Button
           size="lg"
           variant="outline"
           onClick={() => navigate('/live')}
-          className="border-slate-300 text-slate-800 hover:bg-slate-100 rounded-md font-bold cursor-pointer"
+          className="border-slate-300 text-slate-800 hover:bg-slate-50 rounded-xl font-bold cursor-pointer transition-all hover:border-[#003366]"
         >
-          Explore Live GIS Situations
+          Explore Live Emergency Map
         </Button>
       </div>
     </div>

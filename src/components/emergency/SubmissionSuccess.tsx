@@ -45,12 +45,14 @@ export function SubmissionSuccess({ report, onReset }: SubmissionSuccessProps) {
     >
       {/* Official Confirmation Banner */}
       <div
-        className={`rounded-md border p-6 sm:p-8 text-center shadow-sm bg-white ${
-          isOffline ? 'border-amber-300 ring-2 ring-amber-100' : 'border-emerald-300 ring-2 ring-emerald-100'
+        className={`rounded-2xl border p-6 sm:p-8 text-center shadow-xs ${
+          isOffline
+            ? 'border-amber-300/80 bg-gradient-to-b from-amber-50/70 to-white'
+            : 'border-emerald-300/80 bg-gradient-to-b from-emerald-50/70 to-white'
         }`}
       >
         <div
-          className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border ${
+          className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border ${
             isOffline
               ? 'border-amber-300 bg-amber-100 text-amber-800'
               : 'border-emerald-300 bg-emerald-100 text-emerald-800'
@@ -61,27 +63,24 @@ export function SubmissionSuccess({ report, onReset }: SubmissionSuccessProps) {
 
         <div className="space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            भारत सरकार | Government of India — NDMA Citizen Portal
+            DisasterShield | Open Crisis Response Network
           </span>
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
             {isOffline
-              ? 'Emergency Intimation Saved to Local Storage (Offline Mode)'
-              : 'Official Emergency Intimation Acknowledged'}
+              ? 'Emergency Report Saved to Local Storage (Offline Mode)'
+              : 'Emergency Incident Report Acknowledged'}
           </h2>
-          <p className="text-sm font-semibold text-[#003366]">
-            {isOffline ? 'ऑफलाइन डेटा संग्रहण सफल' : 'आपातकालीन सूचना सफलतापूर्वक दर्ज की गई'}
-          </p>
         </div>
 
         <p className="mt-3 text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
           {isOffline
-            ? 'Your emergency dossier is securely encrypted on this browser. When cellular or Wi-Fi connectivity resumes, it will automatically transmit to the National Emergency Operations Centre without any user intervention.'
-            : 'Your emergency dossier has been logged into the National Incident Grid and prioritized for tactical response dispatch.'}
+            ? 'Your emergency dossier is securely preserved in browser memory. When cellular or Wi-Fi connectivity resumes, it will automatically transmit to the Crisis Coordination Desk without any further action.'
+            : 'Your emergency dossier has been logged into the Crisis Response Network and prioritized for responder dispatch.'}
         </p>
 
         {/* Tracking ID Pill */}
-        <div className="mt-6 inline-flex flex-col sm:flex-row items-center gap-3 bg-slate-50 border border-slate-300 px-6 py-3 rounded-md shadow-xs">
-          <span className="text-xs text-slate-600 font-bold uppercase tracking-wider">Official Docket / Tracking ID:</span>
+        <div className="mt-6 inline-flex flex-col sm:flex-row items-center gap-3 bg-slate-50/80 border border-slate-300/80 px-6 py-3 rounded-xl shadow-xs">
+          <span className="text-xs text-slate-600 font-bold uppercase tracking-wider">Tracking Code:</span>
           <span className="text-2xl font-extrabold text-[#003366] font-mono tracking-wider">
             {report.trackingId}
           </span>
@@ -90,7 +89,7 @@ export function SubmissionSuccess({ report, onReset }: SubmissionSuccessProps) {
             variant="outline"
             size="sm"
             onClick={handleCopyId}
-            className="h-8 px-3 text-xs border-slate-300 bg-white text-slate-700 hover:bg-slate-100 rounded cursor-pointer"
+            className="h-8 px-3 text-xs border-slate-300 bg-white text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer"
           >
             {copied ? (
               <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
@@ -106,19 +105,19 @@ export function SubmissionSuccess({ report, onReset }: SubmissionSuccessProps) {
       </div>
 
       {/* Incident Summary Card / Formal Docket */}
-      <div className="rounded-md border border-slate-200 bg-white p-6 sm:p-7 space-y-5 shadow-xs">
-        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-7 space-y-5 shadow-xs">
+        <div className="flex items-center justify-between border-b border-slate-200/90 pb-3">
           <div>
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
-              Official Acknowledgment Receipt / पावती रसीद
+              Incident Acknowledgment Receipt
             </h3>
-            <p className="text-xs text-slate-500">FORM NDMA-01 Docket Details</p>
+            <p className="text-xs text-slate-500">DisasterShield Docket Details</p>
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => window.print()}
-            className="text-xs text-slate-600 hover:text-slate-900 gap-1.5 cursor-pointer"
+            className="text-xs text-slate-600 hover:text-slate-900 gap-1.5 cursor-pointer rounded-lg"
           >
             <Printer className="h-3.5 w-3.5" /> Print Receipt
           </Button>
@@ -183,7 +182,7 @@ export function SubmissionSuccess({ report, onReset }: SubmissionSuccessProps) {
           type="button"
           size="lg"
           onClick={() => navigate(`/track?id=${report.trackingId}`)}
-          className="flex-1 gap-2 text-sm font-bold rounded-md bg-[#003366] hover:bg-[#0A2540] text-white shadow-xs cursor-pointer"
+          className="flex-1 gap-2 text-sm font-bold rounded-xl bg-[#003366] hover:bg-[#0A2540] text-white shadow-xs cursor-pointer transition-all hover:shadow-md"
         >
           Track Incident Verification & Dispatch Status <ArrowRight className="h-4 w-4" />
         </Button>
@@ -192,7 +191,7 @@ export function SubmissionSuccess({ report, onReset }: SubmissionSuccessProps) {
           variant="outline"
           size="lg"
           onClick={onReset}
-          className="rounded-md border-slate-300 bg-white text-slate-800 hover:bg-slate-50 cursor-pointer"
+          className="rounded-xl border-slate-300 bg-white text-slate-800 hover:bg-slate-50 cursor-pointer transition-all hover:border-[#003366]"
         >
           File Another Emergency Report
         </Button>

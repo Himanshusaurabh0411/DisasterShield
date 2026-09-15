@@ -120,27 +120,27 @@ export function Track() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6 text-slate-900 bg-white">
-      {/* Official Header */}
-      <div className="border border-slate-200 rounded-md bg-slate-50 p-6 space-y-2 shadow-xs">
+      {/* Header */}
+      <div className="border border-slate-200/90 rounded-2xl bg-gradient-to-b from-slate-50/80 to-white p-6 sm:p-7 space-y-2 shadow-xs">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#003366] text-white">
+          <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#003366] text-white">
             PUBLIC STATUS TRACKER
           </span>
-          <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
-            नागरिक स्थिति ट्रैकर | National Incident Audit Registry
+          <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
+            Crisis Response Audit Registry
           </span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          Track Emergency Intimation Docket
+          Track Emergency Incident Docket
         </h1>
         <p className="text-xs text-slate-600 max-w-2xl leading-relaxed">
-          Monitor your incident report through each statutory stage: local storage caching, cloud synchronization,
-          duty officer verification, NDRF/SDRF battalion dispatch, and final rescue resolution.
+          Monitor your incident report through each stage: local storage caching, network synchronization,
+          coordination verification, volunteer squad dispatch, and final rescue resolution.
         </p>
       </div>
 
       {/* Docket Search Bar */}
-      <div className="rounded-md border border-slate-200 bg-white p-5 space-y-3 shadow-xs">
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-3 shadow-xs">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -154,21 +154,21 @@ export function Track() {
               value={trackingInput}
               onChange={(e) => setTrackingInput(e.target.value)}
               placeholder="Enter Official Tracking Code (e.g. DS-2026-84A72)"
-              className="pl-10 h-11 text-sm rounded-md border-slate-300 bg-white text-slate-900 font-mono font-semibold"
+              className="pl-10 h-11 text-sm rounded-xl border-slate-300 bg-white text-slate-900 font-mono font-semibold"
             />
           </div>
           <Button
             type="submit"
             size="lg"
-            className="h-11 px-6 font-bold rounded-md bg-[#003366] hover:bg-[#0A2540] text-white shadow-xs cursor-pointer"
+            className="h-11 px-6 font-bold rounded-xl bg-[#003366] hover:bg-[#0A2540] text-white shadow-xs cursor-pointer transition-all hover:shadow-md"
           >
-            Track Status / स्थिति जांचें
+            Track Status
           </Button>
         </form>
 
         {/* Quick Demo Docket Picker */}
         <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-slate-500">
-          <span className="font-semibold">Sample Tracking Dockets:</span>
+          <span className="font-semibold">Sample Tracking Codes:</span>
           {['DS-2026-84A72', 'DS-2026-31C45', 'DS-2026-55F91', 'DS-2026-72B38'].map((id) => (
             <button
               key={id}
@@ -177,7 +177,7 @@ export function Track() {
                 setTrackingInput(id);
                 performSearch(id);
               }}
-              className="px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-mono font-semibold border border-slate-300 transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-mono font-semibold border border-slate-300 transition-colors cursor-pointer"
             >
               {id}
             </button>
@@ -187,8 +187,8 @@ export function Track() {
 
       {/* Results View */}
       {searched && !activeReport ? (
-        <div className="rounded-md border border-slate-200 bg-slate-50 p-10 text-center space-y-4">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 border border-amber-300 text-amber-800">
+        <div className="rounded-2xl border border-slate-200/90 bg-slate-50/70 p-10 text-center space-y-4 shadow-xs">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 border border-amber-300 text-amber-800">
             <AlertTriangle className="h-6 w-6" />
           </div>
           <h3 className="text-base font-bold text-slate-900">
@@ -196,13 +196,13 @@ export function Track() {
           </h3>
           <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
             Please verify your tracking code. If submitted in offline mode, ensure this browser session
-            has not been cleared before cloud synchronization completed.
+            has not been cleared before background synchronization completed.
           </p>
           <Button
             variant="outline"
             size="sm"
             onClick={() => navigate('/report')}
-            className="rounded-md border-slate-300 text-slate-700 bg-white hover:bg-slate-100"
+            className="rounded-xl border-slate-300 text-slate-700 bg-white hover:bg-slate-50 cursor-pointer"
           >
             Submit a New Report
           </Button>
@@ -211,11 +211,11 @@ export function Track() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Column: Details & AI Screening */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="rounded-md border border-slate-200 bg-white p-6 space-y-5 shadow-xs">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4">
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 space-y-5 shadow-xs">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/90 pb-4">
                 <div>
                   <span className="text-xs text-slate-500 block font-bold uppercase tracking-wider">
-                    Official Intimation Docket
+                    Incident Response Docket
                   </span>
                   <div className="flex items-center gap-2 mt-0.5">
                     <span className="text-2xl font-extrabold tracking-tight text-[#003366] font-mono">
@@ -224,7 +224,7 @@ export function Track() {
                     <button
                       type="button"
                       onClick={handleCopyId}
-                      className="text-slate-500 hover:text-slate-900 p-1.5 rounded hover:bg-slate-100 cursor-pointer"
+                      className="text-slate-500 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer"
                       title="Copy code"
                     >
                       {copied ? <Check className="h-4 w-4 text-emerald-700 font-bold" /> : <Copy className="h-4 w-4" />}
@@ -234,7 +234,7 @@ export function Track() {
 
                 <div className="flex items-center gap-2">
                   <PriorityBadge priority={activeReport.priority} />
-                  <span className="text-xs font-bold px-3 py-1 rounded bg-slate-100 border border-slate-300 text-slate-800 capitalize">
+                  <span className="text-xs font-bold px-3 py-1 rounded-lg bg-slate-100 border border-slate-300 text-slate-800 capitalize">
                     {activeReport.status.replace(/_/g, ' ')}
                   </span>
                 </div>
@@ -242,31 +242,31 @@ export function Track() {
 
               {/* Quick Info Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80">
                   <span className="text-slate-500 block text-[11px] font-semibold">Disaster Category</span>
                   <span className="text-slate-900 font-bold capitalize">
                     {disasterTypeLabels[activeReport.disasterType] || activeReport.disasterType}
                   </span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80">
                   <span className="text-slate-500 block text-[11px] font-semibold">Reported At</span>
                   <span className="text-slate-800 font-medium">{timeAgo(activeReport.createdAt)}</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80">
                   <span className="text-slate-500 block text-[11px] font-semibold">Transmission Mode</span>
                   <span className={activeReport.isOffline ? 'text-amber-800 font-bold' : 'text-emerald-800 font-bold'}>
                     {activeReport.isOffline ? 'Offline Local Storage' : 'Cloud Direct'}
                   </span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80">
                   <span className="text-slate-500 block text-[11px] font-semibold">People Impacted</span>
                   <span className="text-slate-900 font-bold">{activeReport.peopleAffected}</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80">
                   <span className="text-slate-500 block text-[11px] font-semibold">Reported Injured</span>
                   <span className="text-amber-800 font-bold">{activeReport.injured}</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80">
                   <span className="text-slate-500 block text-[11px] font-semibold">Reported Trapped</span>
                   <span className="text-rose-700 font-bold">{activeReport.trapped}</span>
                 </div>
@@ -274,7 +274,7 @@ export function Track() {
 
               {/* Location and notes */}
               <div className="space-y-2 text-xs">
-                <div className="p-3 bg-slate-50 rounded border border-slate-100 space-y-1">
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-1">
                   <span className="text-slate-500 block text-[11px] font-semibold">Geospatial Sector</span>
                   <p className="font-bold text-slate-900 flex items-center gap-1.5">
                     <MapPin className="h-3.5 w-3.5 text-rose-600 shrink-0" />
@@ -285,15 +285,15 @@ export function Track() {
                   )}
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
-                  <span className="text-slate-500 block text-[11px] font-semibold">Ground Intimation Notes</span>
+                <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80">
+                  <span className="text-slate-500 block text-[11px] font-semibold">Ground Report Notes</span>
                   <p className="text-slate-700 mt-1 leading-relaxed">{activeReport.description}</p>
                 </div>
               </div>
 
               {/* Assigned Battalion */}
               {activeReport.responderAssigned && (
-                <div className="p-3 rounded bg-blue-50 border border-blue-200 text-xs text-[#003366] flex items-center justify-between">
+                <div className="p-3.5 rounded-xl bg-blue-50/80 border border-blue-200 text-xs text-[#003366] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Shield className="h-4 w-4 text-[#003366]" />
                     <div>
@@ -301,7 +301,7 @@ export function Track() {
                       <span>{activeReport.responderAssigned}</span>
                     </div>
                   </div>
-                  <span className="px-2 py-0.5 bg-blue-100 rounded text-[11px] font-bold">MOBILIZED</span>
+                  <span className="px-2.5 py-1 bg-blue-100 rounded-lg text-[11px] font-bold">MOBILIZED</span>
                 </div>
               )}
 
@@ -315,24 +315,24 @@ export function Track() {
           </div>
 
           {/* Right Column: 8-Stage Audit Timeline */}
-          <div className="lg:col-span-5 rounded-md border border-slate-200 bg-white p-6 shadow-xs space-y-5">
-            <div className="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <div className="lg:col-span-5 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-5">
+            <div className="border-b border-slate-200/90 pb-3 flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
-                  Statutory Audit Timeline
+                  Incident Audit Timeline
                 </h3>
-                <p className="text-xs text-slate-500">8-Stage Verification Pipeline</p>
+                <p className="text-xs text-slate-500">6-Stage Response Pipeline</p>
               </div>
-              <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
+              <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300">
                 LIVE AUDIT
               </span>
             </div>
 
             <ReportTimeline currentStatus={activeReport.status} />
 
-            <div className="pt-4 border-t border-slate-200 text-xs text-slate-500 leading-relaxed bg-slate-50 p-3 rounded">
-              <span className="font-bold text-slate-700 block mb-1">Public Assurance:</span>
-              Once dispatched, NDRF/SDRF response units establish direct radio communication with district control rooms and informant phones.
+            <div className="pt-4 border-t border-slate-200/90 text-xs text-slate-500 leading-relaxed bg-slate-50/80 p-3.5 rounded-xl">
+              <span className="font-bold text-slate-700 block mb-1">Community Response Assurance:</span>
+              Once dispatched, volunteer rescue squads and emergency teams maintain direct coordination with regional dispatch desks and reporting contacts.
             </div>
           </div>
         </div>
