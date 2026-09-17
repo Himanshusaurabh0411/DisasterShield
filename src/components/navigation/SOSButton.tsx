@@ -26,7 +26,7 @@ export function SOSButton() {
       id: reportId,
       trackingId,
       disasterType: 'rescue_required',
-      description: 'Urgent citizen requisition triggered via National Emergency Assistance (SOS). Immediate disaster rescue dispatch requested at GPS coordinates.',
+      description: 'Urgent citizen requisition triggered via Central Emergency Assistance (SOS). Immediate disaster rescue dispatch requested at GPS coordinates.',
       peopleAffected: 1,
       injured: 0,
       trapped: 1,
@@ -65,7 +65,7 @@ export function SOSButton() {
       addNotification({
         type: 'critical',
         title: 'Emergency SOS Requisition Logged',
-        message: `Requisition registered with National Tracking ID: ${trackingId}`,
+        message: `Requisition registered with Incident Tracking ID: ${trackingId}`,
         reportId: trackingId,
       });
 
@@ -78,7 +78,7 @@ export function SOSButton() {
 
   return (
     <>
-      {/* Floating Reassuring SOS Button (Government Red/Saffron Alert Badge) */}
+      {/* Floating Reassuring SOS Button (Civic Red/Saffron Alert Badge) */}
       <div className="fixed bottom-6 right-6 z-40 group select-none">
         <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden group-hover:block whitespace-nowrap rounded border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-md">
           Emergency Distress Beacon (SOS)
@@ -126,7 +126,7 @@ export function SOSButton() {
                           Emergency SOS Requisition
                         </h3>
                         <p className="text-xs text-slate-600">
-                          Immediate Disaster Response Requisition
+                          Immediate Community Mutual Aid Requisition
                         </p>
                       </div>
                     </div>
@@ -140,16 +140,16 @@ export function SOSButton() {
                   </div>
 
                   <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                    This will transmit an authenticated, high-priority emergency requisition with your current location coordinates directly to the National Disaster Response Force (NDRF) & State Emergency Operations Centre (SEOC).
+                    This will transmit an emergency alert with your current location coordinates directly to nearby community volunteer networks and local relief coordinators.
                   </p>
 
                   <div className="rounded border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 space-y-1">
                     <p className="font-bold flex items-center gap-1.5 text-amber-900">
                       <Shield className="h-4 w-4 text-amber-700" />
-                      Citizen Demonstration Notice
+                      Community Advisory &amp; Disclaimer
                     </p>
                     <p className="text-amber-800 leading-normal">
-                      Phase 1 simulates emergency dispatch sequence and registers an official docket on your local system for testing.
+                      DisasterShield is an independent community platform. For life-threatening emergencies requiring municipal rescue services, always call <strong>112 / 911</strong> directly.
                     </p>
                   </div>
 
@@ -180,12 +180,12 @@ export function SOSButton() {
 
                   <div className="space-y-1">
                     <p className="text-sm font-bold text-slate-900">
-                      {dispatchStage === 1 && 'Transmitting coordinates to SEOC dispatch...'}
-                      {dispatchStage === 2 && 'Registering requisition in State Priority Queue...'}
-                      {dispatchStage === 3 && 'Requisition Authenticated & Registered!'}
+                      {dispatchStage === 1 && 'Transmitting coordinates to community dispatch nodes...'}
+                      {dispatchStage === 2 && 'Registering requisition in Community Priority Queue...'}
+                      {dispatchStage === 3 && 'Requisition Broadcast to Nearby Volunteer Squads!'}
                     </p>
                     <p className="text-xs text-slate-500">
-                      Capturing GPS telemetry &bull; Generating government tracking docket
+                      Capturing GPS telemetry &bull; Generating community response ticket
                     </p>
                   </div>
 

@@ -110,7 +110,7 @@ export const mockIncidents: Incident[] = [
     trackingId: 'DS-2026-91D14',
     disasterType: 'landslide',
     title: 'Wayanad Landslides & Debris Flow — Chooralmala',
-    description: 'Catastrophic debris flow and slope collapse severed hillside settlements. Indian Army Madras Sappers operating 190-ft Bailey Bridge with multi-agency USAR squads.',
+    description: 'Catastrophic debris flow and slope collapse severed hillside settlements. Tactical Engineering Relief Sappers operating 190-ft Bailey Bridge with multi-agency USAR squads.',
     location: {
       latitude: 11.5364,
       longitude: 76.1360,
@@ -188,7 +188,7 @@ export const mockIncidents: Incident[] = [
     trackingId: 'DS-2026-18H52',
     disasterType: 'flood',
     title: 'Vijayawada Floods & Budameru Breach — Singh Nagar',
-    description: 'Budameru Rivulet overflowed and breached in 3 sectors. Heavy drone payload network and NDRF motorized rafts conducting food drops and life-saving evacuations.',
+    description: 'Budameru Rivulet overflowed and breached in 3 sectors. Heavy drone payload network and Rapid Emergency motorized rafts conducting food drops and life-saving evacuations.',
     location: {
       latitude: 16.5062,
       longitude: 80.6480,
@@ -214,7 +214,7 @@ export const mockIncidents: Incident[] = [
     trackingId: 'DS-2026-63K19',
     disasterType: 'landslide',
     title: 'Cloudburst Flash Floods — Samej & Rampur, Shimla',
-    description: 'Midnight cloudbursts down Samej Khad swept away mountain roads and structures. NDRF 14th Bn and ITBP deploying aerial zip-lines and alpine search.',
+    description: 'Midnight cloudbursts down Samej Khad swept away mountain roads and structures. Rapid Emergency Task Force and High-Altitude Alpine Rescue Squads deploying aerial zip-lines and alpine search.',
     location: {
       latitude: 31.4485,
       longitude: 77.6294,

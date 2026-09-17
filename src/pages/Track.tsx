@@ -82,7 +82,7 @@ export function Track() {
         createdAt: foundIncident.createdAt,
         updatedAt: foundIncident.updatedAt,
         isOffline: false,
-        responderAssigned: 'Alpha Medical Response Team (8th NDRF Battalion)',
+        responderAssigned: 'Alpha Medical Response Team (Community Volunteer Squad)',
         aiScore: {
           credibility: 94,
           urgency: foundIncident.priority,
@@ -153,7 +153,7 @@ export function Track() {
             <Input
               value={trackingInput}
               onChange={(e) => setTrackingInput(e.target.value)}
-              placeholder="Enter Official Tracking Code (e.g. DS-2026-84A72)"
+              placeholder="Enter Incident Tracking Code (e.g. DS-2026-84A72)"
               className="pl-10 h-11 text-sm rounded-xl border-slate-300 bg-white text-slate-900 font-mono font-semibold"
             />
           </div>

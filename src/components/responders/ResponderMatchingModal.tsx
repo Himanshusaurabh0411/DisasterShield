@@ -88,7 +88,7 @@ export function ResponderMatchingModal({
                     : 'Optimizing squad capacity & logistical load balancing...'}
                 </p>
                 <p className="text-xs text-slate-500">
-                  Screening nearest NDRF, SDRF and medical response units within 25km radius.
+                  Screening nearest volunteer response units, emergency rescue teams, and medical squads within 25km radius.
                 </p>
               </div>
             </div>

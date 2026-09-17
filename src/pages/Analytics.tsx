@@ -76,14 +76,14 @@ export function Analytics() {
           <div className="flex items-center gap-2">
             <span className="flex h-2.5 w-2.5 rounded-full bg-[#003366] animate-pulse" />
             <span className="text-xs font-bold tracking-wider text-[#003366] uppercase">
-              National Disaster Management Information System (NDMIS)
+              Community Crisis Telemetry System
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            National Disaster Statistical Bulletin & Analytics
+            Community Disaster Statistical Bulletin &amp; Analytics
           </h1>
           <p className="text-xs text-slate-600 max-w-2xl leading-relaxed">
-            राष्ट्रीय आपदा सांख्यिकी बुलेटिन — Empirical operational metrics measuring emergency dispatch velocity, disaster density, resource consumption curves, and field triage efficiency.
+            सामुदायिक आपदा सांख्यिकी बुलेटिन — Empirical operational metrics measuring emergency dispatch velocity, disaster density, resource consumption curves, and field triage efficiency.
           </p>
         </div>
 
@@ -112,7 +112,7 @@ export function Analytics() {
           value="96.8%"
           icon={Shield}
           color="blue"
-          trend="Validated by ground NDRF"
+          trend="Validated by Ground Response Squads"
           trendUp={false}
         />
         <StatCard
@@ -210,7 +210,7 @@ export function Analytics() {
               <TrendingUp className="h-4 w-4 text-emerald-700" />
               Incoming Field Intimations vs Resolved Missions
             </h3>
-            <span className="text-xs font-semibold text-slate-500">24-Hour National Trajectory</span>
+            <span className="text-xs font-semibold text-slate-500">24-Hour Pan-India Trajectory</span>
           </div>
 
           <div className="h-64 w-full">

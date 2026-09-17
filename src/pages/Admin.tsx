@@ -128,7 +128,7 @@ export function Admin() {
     addNotification({
       type: 'critical',
       title: 'Incident Escalated',
-      message: `Report #${id} elevated to NATIONAL DISASTER ESCALATION tier.`,
+      message: `Report #${id} elevated to CENTRAL DISASTER ESCALATION tier.`,
     });
   };
 
@@ -153,7 +153,7 @@ export function Admin() {
             System Admin Portal Required
           </h1>
           <p className="text-sm text-slate-600 leading-relaxed">
-            This verification and triage desk is strictly restricted to certified Emergency Operations Center (EOC) Dispatch Coordinators. Authorization requires a verified Coordinator ID and Master Dispatch Token.
+            This verification and triage desk is restricted to authorized Community Dispatch Coordinators. Authorization requires a verified Coordinator ID and Security Token.
           </p>
         </div>
 
@@ -173,7 +173,7 @@ export function Admin() {
             onClick={() => navigate('/')}
             className="border-slate-300 text-slate-700 hover:bg-slate-50 h-12 rounded-xl font-semibold cursor-pointer"
           >
-            Back to Public Portal
+            Back to Community Portal
           </Button>
         </div>
 

@@ -66,7 +66,7 @@ export function IncidentDetailModal({ incident, onClose, onAssignResponder }: In
 
           {/* Description */}
           <div className="space-y-1.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">Official Situation Report</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">Verified Situation Report</h4>
             <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-md border border-slate-200">
               {incident.description}
             </p>

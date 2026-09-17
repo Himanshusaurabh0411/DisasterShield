@@ -25,7 +25,7 @@ export function DemoControlBar() {
       id: generateReportId(),
       trackingId,
       disasterType: 'fire',
-      description: 'Disaster Simulation: Grid electrical fire reported in Industrial Zone. Fire Brigade & SDRF units dispatched.',
+      description: 'Disaster Simulation: Grid electrical fire reported in Industrial Zone. Fire Brigade & Regional Emergency Relief squads dispatched.',
       peopleAffected: 320,
       injured: 2,
       trapped: 0,
@@ -41,7 +41,7 @@ export function DemoControlBar() {
       mediaFiles: [],
       contactPhone: '+91-98765-DEMO1',
       alternateContact: '',
-      additionalNotes: 'Generated via Official Demo Presenter Panel',
+      additionalNotes: 'Generated via Community Demo Presenter Panel',
       status: isOnline ? 'submitted' : 'locally_stored',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -59,7 +59,7 @@ export function DemoControlBar() {
     addNotification({
       type: 'critical',
       title: 'Incident Simulation Injected',
-      message: `Official tracking docket created: ${trackingId}`,
+      message: `Community incident docket created: ${trackingId}`,
       reportId: trackingId,
     });
   };
@@ -67,8 +67,8 @@ export function DemoControlBar() {
   const handleTriggerNotif = () => {
     addNotification({
       type: 'warning',
-      title: 'IMD River Level Alert',
-      message: 'Central Water Commission reports water levels approaching danger mark (1.8m above normal threshold).',
+      title: 'Open Hydrological Advisory',
+      message: 'Public hydrological sensor feeds report water levels approaching alert mark (1.8m above normal threshold).',
     });
   };
 
@@ -113,7 +113,7 @@ export function DemoControlBar() {
                 onClick={handleTriggerNotif}
                 className="w-full text-left p-2 rounded bg-amber-50 hover:bg-amber-100 border border-amber-200 flex items-center justify-between transition-colors text-amber-900 font-medium"
               >
-                <span>Trigger IMD Advisory</span>
+                <span>Trigger Hydrological Advisory</span>
                 <Bell className="h-3.5 w-3.5 text-amber-700" />
               </button>
             </div>

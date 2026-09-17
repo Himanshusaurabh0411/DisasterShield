@@ -68,7 +68,7 @@ export function ImpactRecoverySection() {
             </div>
             <div className="text-left">
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">National Save Rate</span>
+                <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Overall Relief Success Rate</span>
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
                   {overallRescueRate}%
                 </span>
@@ -318,7 +318,7 @@ export function ImpactRecoverySection() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="px-2 py-0.5 rounded bg-[#FF9933] text-slate-900 font-extrabold text-[10px] uppercase tracking-wider">
-                      Official Incident Dossier
+                      Community Incident Dossier
                     </span>
                     <span className="text-xs text-white/80 font-mono">{activeDossier.id}</span>
                   </div>
@@ -395,7 +395,7 @@ export function ImpactRecoverySection() {
                     <Sparkles className="h-4 w-4 text-[#FF9933] shrink-0 mt-0.5" />
                     <div>
                       <span className="font-bold text-[#003366]">
-                        {modalImageTab === 'primary' ? 'Verified Incident Ground Evidence: ' : 'Official Operational Deployment: '}
+                        {modalImageTab === 'primary' ? 'Verified Incident Ground Evidence: ' : 'Field Operational Deployment: '}
                       </span>
                       <span>
                         {modalImageTab === 'primary'
@@ -408,35 +408,34 @@ export function ImpactRecoverySection() {
 
                 {/* Key Metrics Grid */}
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 text-center">
-                    <div className="text-xs font-bold text-rose-700 uppercase">Population Affected</div>
-                    <div className="text-xl font-black text-rose-900 mt-0.5">
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-center">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Total Affected</span>
+                    <span className="text-sm sm:text-base font-extrabold text-slate-900">
                       {activeDossier.peopleAffected.toLocaleString()}
-                    </div>
+                    </span>
                   </div>
 
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-center">
-                    <div className="text-xs font-bold text-emerald-700 uppercase">Evacuated & Rescued</div>
-                    <div className="text-xl font-black text-emerald-900 mt-0.5">
+                  <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-center">
+                    <span className="text-[10px] uppercase font-bold text-emerald-800 block">Rescued &amp; Sheltered</span>
+                    <span className="text-sm sm:text-base font-extrabold text-emerald-700">
                       {activeDossier.peopleRescued.toLocaleString()}
-                    </div>
+                    </span>
                   </div>
 
-                  <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-3 text-center">
-                    <div className="text-xs font-bold text-cyan-700 uppercase">Relief Efficiency</div>
-                    <div className="text-xl font-black text-cyan-900 mt-0.5">
+                  <div className="p-3 rounded-lg bg-blue-50 border border-blue-200 text-center">
+                    <span className="text-[10px] uppercase font-bold text-[#003366] block">Relief Efficiency</span>
+                    <span className="text-sm sm:text-base font-extrabold text-[#003366]">
                       {activeDossier.reliefEfficiency}%
-                    </div>
+                    </span>
                   </div>
                 </div>
 
-                {/* Narrative Summary */}
+                {/* Narrative Description */}
                 <div>
-                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <Activity className="h-4 w-4 text-[#003366]" />
-                    Incident Context &amp; Dynamics
+                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">
+                    Situation &amp; Meteorological Genesis
                   </h4>
-                  <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-200">
+                  <p className="text-xs text-slate-600 leading-relaxed">
                     {activeDossier.description}
                   </p>
                 </div>
@@ -464,7 +463,7 @@ export function ImpactRecoverySection() {
                 <div>
                   <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center gap-1.5">
                     <FileText className="h-4 w-4 text-[#FF9933]" />
-                    Operational EOC Summary
+                    Operational Field Summary
                   </h4>
                   <p className="text-xs text-slate-600 leading-relaxed bg-amber-50/50 p-3 rounded-lg border border-amber-200/80">
                     {activeDossier.operationalSummary}

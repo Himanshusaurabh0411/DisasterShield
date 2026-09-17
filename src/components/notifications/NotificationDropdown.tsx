@@ -43,7 +43,7 @@ export function NotificationDropdown({ open, onClose }: Props) {
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50">
               <div className="flex items-center gap-2">
                 <Bell className="h-4 w-4 text-[#003366]" />
-                <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">Official Notifications</span>
+                <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">Community Notifications</span>
               </div>
               <button
                 onClick={markAllRead}

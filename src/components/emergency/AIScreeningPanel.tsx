@@ -105,7 +105,7 @@ export function AIScreeningPanel({ aiScore, className = '', isCompact = false }:
       <div className="mt-3 text-xs text-slate-600 flex items-center gap-1.5 bg-white p-2.5 rounded-md border border-slate-200">
         <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
         <span>
-          Advisory: Automated computer vision and geospatial NLP screen incoming citizen reports before official officer dispatch.
+          Advisory: Automated computer vision and geospatial NLP screen incoming community reports before coordinator dispatch.
         </span>
       </div>
     </div>

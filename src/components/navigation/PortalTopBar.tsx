@@ -15,20 +15,24 @@ export function PortalTopBar() {
 
   return (
     <div className="w-full bg-slate-100 border-b border-slate-300 text-slate-700 text-xs select-none">
-      {/* Tricolor Top Accent Line */}
-      <div className="tricolor-bar h-1 w-full" />
+      {/* Modern Civic-Tech Gradient Accent Line */}
+      <div className="h-1 w-full bg-gradient-to-r from-[#003366] via-[#FF9933] to-emerald-600" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 flex flex-wrap items-center justify-between gap-2">
-        {/* Left: Portal Identity (Independent Public Emergency Utility) */}
-        <div className="flex items-center gap-3">
-          <span className="font-bold text-[#003366]">
-            {lang === 'en'
-              ? 'National Disaster Management & Crisis Response Portal'
-              : 'राष्ट्रीय आपदा प्रबंधन एवं संकट प्रतिक्रिया पोर्टल'}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex flex-wrap items-center justify-between gap-2">
+        {/* Left: Independent Community Platform Branding */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <span className="font-extrabold text-[#003366] flex items-center gap-1.5">
+            <span>{lang === 'en' ? 'DISASTERSHIELD' : 'डिज़ास्टरशील्ड'}</span>
           </span>
-          <span className="hidden md:inline text-slate-400">|</span>
-          <span className="hidden md:inline text-slate-600 font-medium">
-            24x7 Citizen Emergency & Response Coordination Utility
+          <span className="text-slate-400">|</span>
+          <span className="font-semibold text-slate-800">
+            {lang === 'en' ? 'Open Community Crisis Network' : 'ओपन कम्युनिटी क्राइसिस नेटवर्क'}
+          </span>
+          <span className="hidden lg:inline text-slate-400">|</span>
+          <span className="hidden lg:inline text-slate-600 font-medium">
+            {lang === 'en'
+              ? 'Independent Mutual Aid & Crisis Response'
+              : 'स्वतंत्र नागरिक आपदा प्रतिक्रिया एवं पारस्परिक सहायता'}
           </span>
         </div>
 

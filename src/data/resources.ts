@@ -43,7 +43,7 @@ export const mockResources: Resource[] = [
     inUse: 1160,
     critical: false,
     unit: 'blankets',
-    location: 'State Warehouse',
+    location: 'Community Hub Warehouse',
   },
   {
     id: 'res-005',
@@ -54,7 +54,7 @@ export const mockResources: Resource[] = [
     inUse: 62,
     critical: true,
     unit: 'sets',
-    location: 'NDRF Depot',
+    location: 'Central Community Logistics Depot',
   },
   {
     id: 'res-006',
@@ -76,7 +76,7 @@ export const mockResources: Resource[] = [
     inUse: 82,
     critical: false,
     unit: 'vehicles',
-    location: 'Transport Department',
+    location: 'Regional Volunteer Motorpool',
   },
   {
     id: 'res-008',
@@ -87,6 +87,6 @@ export const mockResources: Resource[] = [
     inUse: 215,
     critical: false,
     unit: 'units',
-    location: 'State Relief Camp',
+    location: 'Community Relief Camp',
   },
 ];

@@ -14,7 +14,8 @@ import {
   HeartHandshake,
   BookOpen,
   PhoneCall,
-  Building2
+  Building2,
+  AlertTriangle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -171,33 +172,45 @@ export function About() {
           </div>
           <div className="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-slate-200/80">
             <CheckCircle2 className="h-4 w-4 text-emerald-700 shrink-0" />
-            <span>Emergency helplines (112 / 1078) fast-dial integrations</span>
+            <span>Local emergency services &amp; community hotlines fast-dial integration</span>
           </div>
         </div>
       </div>
 
-      {/* Emergency Helpline Contacts Box */}
+      {/* Prominent Non-Governmental Platform Disclaimer */}
+      <div className="rounded-2xl border-2 border-amber-300 bg-amber-50/80 p-5 sm:p-6 space-y-2">
+        <div className="flex items-center gap-2.5 text-amber-900 font-extrabold text-sm uppercase tracking-wide">
+          <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0" />
+          <span>Independent Platform Notice &amp; Disclaimer</span>
+        </div>
+        <p className="text-xs sm:text-sm text-amber-950 font-medium leading-relaxed">
+          DisasterShield is an independent, non-governmental community platform and is not affiliated with any official government agency.
+          The information provided across this platform is crowdsourced and coordinated by volunteers for mutual aid and situational awareness.
+          In any life-threatening emergency, always contact your local official emergency responders (such as 112 / 911 / local police &amp; fire services) immediately.
+        </p>
+      </div>
+
+      {/* Emergency Guidance & Community Helplines Directory */}
       <div className="rounded-2xl border border-slate-200/90 bg-white p-6 space-y-3 shadow-xs">
         <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
-          <PhoneCall className="h-4 w-4 text-rose-700" />
-          Emergency Helplines Directory (24x7)
+          <PhoneCall className="h-4 w-4 text-[#003366]" />
+          General Emergency Guidance &amp; Community Contacts
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
-            <span className="text-slate-500 block text-[11px] font-semibold">Disaster Response Line</span>
-            <span className="text-base font-extrabold text-rose-700">1078</span>
+            <span className="text-slate-500 block text-[11px] font-semibold">Local Emergency Services</span>
+            <span className="text-base font-extrabold text-rose-700">112 / 911</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Dial directly for immediate police, fire, or ambulance dispatch</span>
           </div>
           <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
-            <span className="text-slate-500 block text-[11px] font-semibold">National Emergency</span>
-            <span className="text-base font-extrabold text-[#003366]">112</span>
+            <span className="text-slate-500 block text-[11px] font-semibold">Community Mutual Aid Line</span>
+            <span className="text-base font-extrabold text-[#003366]">Volunteer Desk</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Crowdsourced humanitarian coordination &amp; volunteer teams</span>
           </div>
           <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
-            <span className="text-slate-500 block text-[11px] font-semibold">Fire Emergency Service</span>
-            <span className="text-base font-extrabold text-amber-800">101</span>
-          </div>
-          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
-            <span className="text-slate-500 block text-[11px] font-semibold">Ambulance & Medical Aid</span>
-            <span className="text-base font-extrabold text-emerald-700">108</span>
+            <span className="text-slate-500 block text-[11px] font-semibold">Local Municipal Helplines</span>
+            <span className="text-base font-extrabold text-emerald-700">Area Helpline</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Contact district flood control or municipal helpline units</span>
           </div>
         </div>
       </div>

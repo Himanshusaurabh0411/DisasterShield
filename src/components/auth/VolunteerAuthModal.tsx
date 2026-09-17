@@ -83,7 +83,7 @@ export function VolunteerAuthModal({ isOpen, onClose, redirectTo = '/restricted-
   const handleAuthenticate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!registeredId.trim()) {
-      setError('Please provide your official Registered Volunteer ID.');
+      setError('Please provide your Registered Volunteer ID.');
       return;
     }
     if (!passcode.trim()) {

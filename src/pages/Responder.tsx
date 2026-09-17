@@ -80,7 +80,7 @@ export function Responder() {
       nearestUnits: [
         {
           id: 'unit-1',
-          name: 'NDRF 8th Urban Search & Rescue Battalion',
+          name: '8th Community Urban Search & Rescue Squad',
           type: 'Heavy Extraction & Flood Rescue',
           distanceKm: 1.4,
           etaMinutes: 4,
@@ -96,7 +96,7 @@ export function Responder() {
         },
         {
           id: 'unit-3',
-          name: 'State Disaster Response Boat Squad',
+          name: 'Community Disaster Relief Boat Squad',
           type: 'Swift-Water Inflatable Craft',
           distanceKm: 2.8,
           etaMinutes: 8,

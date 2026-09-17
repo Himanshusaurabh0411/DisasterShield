@@ -31,8 +31,8 @@ import { SOSAlert, NearestUnit } from '@/types';
 
 const TACTICAL_UNITS: NearestUnit[] = [
   {
-    id: 'unit-ndrf-08',
-    name: '8th NDRF Urban Search & Rescue Battalion',
+    id: 'unit-comm-08',
+    name: '8th Community Urban Search & Rescue Squad',
     type: 'Heavy Urban Flood & Extrication Squad',
     distanceKm: 1.4,
     etaMinutes: 4,
@@ -40,8 +40,8 @@ const TACTICAL_UNITS: NearestUnit[] = [
     assigned: false,
   },
   {
-    id: 'unit-sdrf-03',
-    name: 'State Disaster Response Unit Bravo',
+    id: 'unit-comm-03',
+    name: 'Community Disaster Relief Unit Bravo',
     type: 'Inflatable Boat & Swift Water Team',
     distanceKm: 2.1,
     etaMinutes: 6,
@@ -90,8 +90,8 @@ export function RestrictedResponder() {
             Restricted Operations Center
           </h1>
           <p className="text-sm text-slate-600 leading-relaxed">
-            This command center is restricted to verified first responders, NDRF/SDRF personnel, and
-            affiliated NGO operational leads. Please authenticate to view live tactical channels and SOS sirens.
+            This operations desk is restricted to verified community responders, volunteer team leads, and
+            affiliated NGO coordinators. Please authenticate to view live tactical channels and SOS sirens.
           </p>
         </div>
 
@@ -331,21 +331,21 @@ export function RestrictedResponder() {
           {/* Quick Dispatch Directory */}
           <div className="pt-2 border-t border-slate-100">
             <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">
-              Direct EOC Lines
+              Community Dispatch Lines
             </span>
             <div className="space-y-1 text-xs">
               <div className="flex items-center justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-700">NDRF Control Room:</span>
-                <a href="tel:1078" className="font-bold text-rose-700 hover:underline">
-                  1078 / 011-24363260
+                <span className="text-slate-700">Community Dispatch Desk:</span>
+                <a href="tel:112" className="font-bold text-rose-700 hover:underline">
+                  112 (Local EMS)
                 </a>
               </div>
               <div className="flex items-center justify-between py-1 border-b border-slate-100">
-                <span className="text-slate-700">Medical Airwing:</span>
+                <span className="text-slate-700">Medical Airwing Support:</span>
                 <span className="font-bold text-[#003366]">+91-755-244-0108</span>
               </div>
               <div className="flex items-center justify-between py-1">
-                <span className="text-slate-700">Civil Defence Duty Desk:</span>
+                <span className="text-slate-700">Community Volunteer Desk:</span>
                 <span className="font-bold text-slate-800">+91-755-255-0101</span>
               </div>
             </div>
@@ -421,7 +421,7 @@ export function RestrictedResponder() {
               <Zap className="h-5 w-5 shrink-0" />
               <div>
                 <span className="font-bold block">Need Additional Air or Heavy Equipment Support?</span>
-                <span className="text-slate-600">Requisition central SDRF high-capacity motorized rafts or drone units.</span>
+                <span className="text-slate-600">Requisition regional motorized rescue rafts or heavy payload drone units.</span>
               </div>
             </div>
             <Button

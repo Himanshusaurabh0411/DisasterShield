@@ -53,7 +53,7 @@ const STEPS = [
   { id: 2, label: 'Geotag Location', title: '2. Exact Geographic Location & Landmark' },
   { id: 3, label: 'Field Evidence', title: '3. Attach Incident Photographs or Video' },
   { id: 4, label: 'Citizen Contact', title: '4. Informant Details & Phone Verification' },
-  { id: 5, label: 'Audit & Submit', title: '5. Verification & Official Docket Submission' },
+  { id: 5, label: 'Audit & Submit', title: '5. Verification & Incident Report Submission' },
 ];
 
 export function Report() {
@@ -158,7 +158,7 @@ export function Report() {
       nearestUnits: [
         {
           id: 'unit-1',
-          name: 'NDRF Fast Incident Response Squad (Sector 4)',
+          name: 'Central Rapid Response Squad (Sector 4)',
           type: 'Heavy Search & Rescue',
           distanceKm: 1.2,
           etaMinutes: 4,
@@ -166,7 +166,7 @@ export function Report() {
         },
         {
           id: 'unit-2',
-          name: 'State Disaster Response Boat Battalion',
+          name: 'Regional Disaster Relief Boat Battalion',
           type: 'Inflatable Rafts & Evacuation',
           distanceKm: 2.3,
           etaMinutes: 7,

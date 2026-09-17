@@ -43,7 +43,7 @@ export function SubmissionSuccess({ report, onReset }: SubmissionSuccessProps) {
       animate={{ opacity: 1, scale: 1 }}
       className="max-w-3xl mx-auto space-y-6 text-slate-900"
     >
-      {/* Official Confirmation Banner */}
+      {/* Community Confirmation Banner */}
       <div
         className={`rounded-2xl border p-6 sm:p-8 text-center shadow-xs ${
           isOffline

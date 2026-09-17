@@ -19,14 +19,14 @@ export function BreakingNewsTicker() {
       aria-label="Live Emergency Broadcast"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-10">
-        {/* Live Broadcast Badge */}
-        <div className="flex items-center gap-2 bg-[#FF9933] text-slate-900 px-3 py-1 rounded-lg font-extrabold text-[11px] shrink-0 uppercase tracking-wider shadow-xs mr-3">
+        {/* Community Emergency Alert Badge */}
+        <div className="flex items-center gap-2 bg-[#003366] text-white px-3 py-1 rounded font-extrabold text-[11px] shrink-0 uppercase tracking-wider shadow-xs mr-3 border-l-4 border-[#FF9933]">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-600 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
           </span>
-          <span className="hidden sm:inline">LIVE EMERGENCY FEED</span>
-          <span className="sm:hidden">LIVE</span>
+          <span className="hidden sm:inline">सामुदायिक अलर्ट | COMMUNITY ALERT</span>
+          <span className="sm:hidden">अलर्ट</span>
         </div>
 
         {/* Scrolling Ticker Text */}

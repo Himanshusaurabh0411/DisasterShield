@@ -33,7 +33,7 @@ const PRESET_COORDINATORS: AdminSession[] = [
     name: 'Chief Officer Devendra Sen',
     role: 'Central Dispatch & Triage Director',
     clearance: 'SUPER_ADMIN',
-    dutyStation: 'National Crisis Operations Centre (NEOC)',
+    dutyStation: 'Community Crisis Operations Hub (CCOH)',
     securityToken: 'DISPATCH-COORD-2026',
     phone: '+91 11 2436 3260',
   },
@@ -43,7 +43,7 @@ const PRESET_COORDINATORS: AdminSession[] = [
     name: 'Meera Joshi',
     role: 'Ground Verification & AI Triage Controller',
     clearance: 'LEVEL-3_COORDINATOR',
-    dutyStation: 'Regional EOC Sector 4 (Bhopal)',
+    dutyStation: 'Regional Community Operations Node (Sector 4)',
     securityToken: 'DISPATCH-COORD-2026',
     phone: '+91 755 244 0108',
   },
@@ -70,7 +70,7 @@ export function AdminAuthModal({ isOpen, onClose, redirectTo = '/admin' }: Admin
   const handleAuthenticate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!coordinatorId.trim()) {
-      setError('Please provide your official Dispatch Coordinator ID.');
+      setError('Please provide your Dispatch Coordinator ID.');
       return;
     }
     if (!securityToken.trim()) {
@@ -142,7 +142,7 @@ export function AdminAuthModal({ isOpen, onClose, redirectTo = '/admin' }: Admin
                 Authorized Dispatch Coordinator Profiles (Click to Load)
               </span>
               <span className="text-[10px] font-semibold text-[#003366] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                Encrypted EOC Node
+                Encrypted Dispatch Node
               </span>
             </div>
 
@@ -216,7 +216,7 @@ export function AdminAuthModal({ isOpen, onClose, redirectTo = '/admin' }: Admin
 
             <div>
               <Label className="text-[11px] font-bold text-slate-700 block mb-1">
-                EOC Duty Station / आपातकालीन संचालन केंद्र स्टेशन
+                Coordination Station / समन्वय केंद्र स्टेशन
               </Label>
               <div className="relative">
                 <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
