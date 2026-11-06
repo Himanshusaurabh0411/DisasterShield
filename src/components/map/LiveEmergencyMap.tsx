@@ -12,12 +12,15 @@ import {
   Users,
   Clock,
   Shield,
-  Filter
+  Filter,
+  Globe2,
+  Key
 } from 'lucide-react';
 import { Incident } from '@/types';
 import { priorityConfig, disasterTypeLabels } from '@/data/incidents';
 import { formatNumber, timeAgo } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { GoogleEmergencyMap } from '@/components/map/GoogleEmergencyMap';
 
 interface LiveEmergencyMapProps {
   incidents: Incident[];
@@ -27,6 +30,7 @@ interface LiveEmergencyMapProps {
   className?: string;
   height?: string;
   showFilters?: boolean;
+  defaultEngine?: 'leaflet' | 'google';
 }
 
 const disasterEmoji: Record<string, string> = {
@@ -58,6 +62,7 @@ export function LiveEmergencyMap({
   className = '',
   height = '520px',
   showFilters = true,
+  defaultEngine,
 }: LiveEmergencyMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const handleSelect = onIncidentClick || onIncidentSelect;
@@ -67,12 +72,38 @@ export function LiveEmergencyMap({
   const [activeLayer, setActiveLayer] = useState<'carto' | 'osm'>('carto');
   const tileLayerRef = useRef<L.TileLayer | null>(null);
 
+  // Check if Google Maps API key exists
+  const hasGoogleKey = Boolean(
+    (import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '').trim() ||
+    localStorage.getItem('disastershield_google_maps_key')
+  );
+
+  const [engine, setEngine] = useState<'leaflet' | 'google'>(() => {
+    if (defaultEngine) return defaultEngine;
+    return hasGoogleKey ? 'google' : 'leaflet';
+  });
+
   // Filtered list
   const filteredIncidents = incidents.filter((inc) => {
     if (filterType === 'all') return true;
     if (filterType === 'critical') return inc.priority === 'critical';
     return inc.disasterType === filterType;
   });
+
+  // If engine is Google Maps, render GoogleEmergencyMap
+  if (engine === 'google') {
+    return (
+      <div className={`relative ${className}`}>
+        <GoogleEmergencyMap
+          incidents={filteredIncidents}
+          selectedIncidentId={selectedIncidentId}
+          onIncidentClick={handleSelect}
+          height={height}
+          onSwitchToLeaflet={() => setEngine('leaflet')}
+        />
+      </div>
+    );
+  }
 
   // Initialize Leaflet Map
   useEffect(() => {
@@ -139,114 +170,91 @@ export function LiveEmergencyMap({
     markersRef.current = {};
 
     filteredIncidents.forEach((incident) => {
+      const lat = incident.lat || incident.location.latitude;
+      const lng = incident.lng || incident.location.longitude;
+      const isSelected = selectedIncidentId === incident.id;
       const sev = severityColors[incident.priority] || severityColors.medium;
       const emoji = disasterEmoji[incident.disasterType] || '⚠️';
-      const isCritical = incident.priority === 'critical';
 
-      // Custom pulsing Google Maps-style pin icon
-      const customIcon = L.divIcon({
-        className: 'custom-emergency-pin',
-        html: `
-          <div class="relative flex items-center justify-center cursor-pointer group" style="width: 38px; height: 38px;">
-            ${
-              isCritical
-                ? `<div class="absolute inset-0 rounded-full animate-ping opacity-75" style="background-color: ${sev.pinBg};"></div>`
-                : ''
-            }
-            <div class="relative flex items-center justify-center w-8 h-8 rounded-full shadow-lg border-2 border-white transition-transform duration-200 transform group-hover:scale-110" style="background-color: ${sev.pinBg};">
-              <span class="text-sm select-none">${emoji}</span>
-            </div>
-            <div class="absolute -bottom-1 w-2 h-2 rotate-45 border-r-2 border-b-2 border-white shadow-xs" style="background-color: ${sev.pinBg};"></div>
+      // Custom Glowing Pulsing Marker HTML
+      const iconHtml = `
+        <div class="relative group cursor-pointer" style="transform: translate(-50%, -100%);">
+          <!-- Outer Ping Shockwave (for Critical & High priority) -->
+          ${
+            incident.priority === 'critical'
+              ? `<div class="absolute -top-1 -left-1 w-9 h-9 rounded-full bg-rose-500/40 animate-ping"></div>`
+              : incident.priority === 'high'
+              ? `<div class="absolute -top-0.5 -left-0.5 w-8 h-8 rounded-full bg-amber-500/30 animate-pulse"></div>`
+              : ''
+          }
+
+          <!-- Pin Body -->
+          <div class="relative flex items-center justify-center w-7 h-7 rounded-full border-2 shadow-md transition-transform hover:scale-125 ${
+            isSelected
+              ? 'ring-4 ring-[#003366] border-white scale-110'
+              : 'border-white'
+          }" style="background-color: ${sev.pinBg};">
+            <span class="text-xs select-none drop-shadow-xs">${emoji}</span>
           </div>
-        `,
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -40],
+
+          <!-- Pin Pointer Tip -->
+          <div class="w-0 h-0 mx-auto border-l-4 border-r-4 border-t-5 border-transparent" style="border-t-color: ${sev.pinBg};"></div>
+        </div>
+      `;
+
+      const customIcon = L.divIcon({
+        className: 'custom-emergency-marker',
+        html: iconHtml,
+        iconSize: [28, 34],
+        iconAnchor: [14, 34],
+        popupAnchor: [0, -36],
       });
 
-      const marker = L.marker([incident.lat, incident.lng], { icon: customIcon }).addTo(map);
+      const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
 
-      // Popup Content (Modern Google Maps-like card)
+      // Professional Situation Dossier Popup
       const popupHtml = `
-        <div class="p-4 space-y-3 font-sans max-w-xs text-slate-900">
-          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider" style="background-color: ${sev.bg}; color: ${sev.text}; border: 1px solid ${sev.border};">
-              ${incident.priority} PRIORITY
+        <div class="p-3 text-xs text-slate-800 min-w-[210px] font-sans">
+          <div class="flex items-center justify-between pb-1.5 border-b border-slate-200">
+            <span class="font-mono text-[10px] font-bold text-[#003366]">${incident.trackingId}</span>
+            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase" style="background-color: ${sev.bg}; color: ${sev.text}; border: 1px solid ${sev.border};">
+              ${incident.priority}
             </span>
-            <span class="text-[11px] text-slate-500 font-semibold">${disasterTypeLabels[incident.disasterType]}</span>
           </div>
-
-          <div>
-            <h4 class="text-sm font-bold text-slate-900 leading-snug">${incident.title}</h4>
-            <p class="text-xs text-slate-600 flex items-center gap-1 mt-1 font-medium">
-              <svg class="w-3.5 h-3.5 text-rose-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>${incident.location.area}</span>
-            </p>
-          </div>
-
-          <p class="text-xs text-slate-600 leading-relaxed line-clamp-2 bg-slate-50 p-2 rounded border border-slate-100">
-            ${incident.description}
+          <h4 class="font-bold text-slate-900 mt-2 text-xs leading-snug">${incident.title}</h4>
+          <p class="text-slate-500 text-[11px] mt-1 flex items-center gap-1">
+            📍 ${incident.location.area}
           </p>
-
-          <div class="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100">
-            <div>
-              <span class="text-[10px] text-slate-400 block font-semibold">PEOPLE IMPACTED</span>
-              <span class="font-bold text-slate-900">${formatNumber(incident.peopleAffected)}</span>
-            </div>
-            <div>
-              <span class="text-[10px] text-slate-400 block font-semibold">TRAPPED</span>
-              <span class="font-bold ${incident.trapped > 0 ? 'text-rose-600' : 'text-slate-700'}">${incident.trapped}</span>
-            </div>
-          </div>
-
-          <div class="pt-2">
-            <button
-              id="btn-inspect-${incident.id}"
-              class="w-full py-2 px-3 rounded-lg bg-[#003366] hover:bg-[#0B192C] text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <span>Inspect Incident Dossier</span>
-              <span>&rarr;</span>
-            </button>
+          <div class="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-[11px]">
+            <span class="font-semibold text-slate-700">${incident.peopleAffected} Impacted</span>
+            <span class="text-slate-400">${timeAgo(incident.createdAt)}</span>
           </div>
         </div>
       `;
 
-      marker.bindPopup(popupHtml, { maxWidth: 320 });
-
-      marker.on('popupopen', () => {
-        const btn = document.getElementById(`btn-inspect-${incident.id}`);
-        if (btn) {
-          btn.onclick = () => {
-            handleSelect?.(incident);
-          };
-        }
+      marker.bindPopup(popupHtml, {
+        className: 'custom-leaflet-popup',
+        closeButton: false,
       });
 
       marker.on('click', () => {
-        handleSelect?.(incident);
+        if (handleSelect) handleSelect(incident);
       });
 
       markersRef.current[incident.id] = marker;
     });
-  }, [filteredIncidents, handleSelect]);
+  }, [filteredIncidents, selectedIncidentId, handleSelect]);
 
-  // Handle programmatic selection / auto-pan
+  // Center on Selected Incident
   useEffect(() => {
     if (!selectedIncidentId || !mapInstanceRef.current) return;
     const selected = incidents.find((i) => i.id === selectedIncidentId);
-    if (!selected) return;
-
-    mapInstanceRef.current.flyTo([selected.lat, selected.lng], 12, {
-      duration: 1.2,
-    });
-
-    const marker = markersRef.current[selectedIncidentId];
-    if (marker) {
+    if (selected) {
+      const lat = selected.lat || selected.location.latitude;
+      const lng = selected.lng || selected.location.longitude;
+      mapInstanceRef.current.flyTo([lat, lng], 8, { duration: 1.2 });
       setTimeout(() => {
-        marker.openPopup();
+        markersRef.current[selected.id]?.openPopup();
       }, 700);
     }
   }, [selectedIncidentId, incidents]);
@@ -291,19 +299,16 @@ export function LiveEmergencyMap({
             ))}
           </div>
 
-          {/* Live Badge */}
-          <div className="hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-slate-200/90 shadow-md pointer-events-auto">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
-            </span>
-            <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-              Live Crisis Map
-            </span>
-            <span className="text-slate-300">|</span>
-            <span className="text-xs text-slate-500 font-medium">
-              {filteredIncidents.length} Active Hotspots
-            </span>
+          {/* Engine Switcher to Google Maps */}
+          <div className="flex items-center gap-2 pointer-events-auto">
+            <Button
+              size="sm"
+              onClick={() => setEngine('google')}
+              className="bg-white/95 backdrop-blur-md hover:bg-slate-100 text-slate-800 border border-slate-200 shadow-md text-xs font-bold rounded-xl cursor-pointer gap-1.5 h-8 px-3"
+            >
+              <Key className="h-3.5 w-3.5 text-blue-600" />
+              <span>Google Maps Mode</span>
+            </Button>
           </div>
         </div>
       )}

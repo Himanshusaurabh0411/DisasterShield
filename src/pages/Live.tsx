@@ -19,6 +19,7 @@ import { IncidentCard } from '@/components/reports/IncidentCard';
 import { IncidentDetailModal } from '@/components/reports/IncidentDetailModal';
 import { LiveEmergencyMap } from '@/components/map/LiveEmergencyMap';
 import { Geospatial3DMap } from '@/components/map/Geospatial3DMap';
+import { GoogleEmergencyMap } from '@/components/map/GoogleEmergencyMap';
 import { mockIncidents, disasterTypeLabels } from '@/data/incidents';
 import { Incident, DisasterType, PriorityLevel, IncidentStatus } from '@/types';
 import { Input } from '@/components/ui/input';
@@ -30,7 +31,7 @@ export function Live() {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
-  const [viewMode, setViewMode] = useState<'3d' | '2d' | 'grid'>('3d');
+  const [viewMode, setViewMode] = useState<'google' | '3d' | '2d' | 'grid'>('google');
 
   // Filtered Incidents
   const filteredIncidents = useMemo(() => {
@@ -75,6 +76,17 @@ export function Live() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <Button
+            size="sm"
+            onClick={() => setViewMode('google')}
+            className={`gap-2 rounded-xl font-bold text-xs cursor-pointer transition-all ${
+              viewMode === 'google'
+                ? 'bg-[#003366] text-white hover:bg-[#0A2540] shadow-xs'
+                : 'border border-slate-300 text-slate-700 bg-white hover:bg-slate-50'
+            }`}
+          >
+            <MapPin className="h-4 w-4 text-emerald-400" /> Google Maps &amp; Satellite
+          </Button>
           <Button
             size="sm"
             onClick={() => setViewMode('3d')}
@@ -155,24 +167,36 @@ export function Live() {
         />
       </div>
 
-      {/* Interactive Map Section (3D WebGL or 2D CartoDB) */}
+      {/* Interactive Map Section (Google Maps, 3D WebGL, or 2D Leaflet) */}
       {viewMode !== 'grid' && (
         <div className="rounded-2xl border border-slate-200/90 bg-white p-4 space-y-3 shadow-xs">
           <div className="flex items-center justify-between border-b border-slate-200/90 pb-2.5">
             <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
               <Layers className="h-4 w-4 text-[#003366]" />
-              {viewMode === '3d'
+              {viewMode === 'google'
+                ? 'Google Maps Geospatial & Satellite Intelligence'
+                : viewMode === '3d'
                 ? '3D WebGL Topographical Terrain & Volumetric Hotspots'
                 : 'Interactive Emergency Hotspot Map'}
             </span>
             <span className="text-xs font-medium text-slate-500">
-              {viewMode === '3d'
+              {viewMode === 'google'
+                ? 'Satellite, Hybrid & Terrain with Real-Time Critical Incident Pins'
+                : viewMode === '3d'
                 ? 'Interactive 3D LiDAR Mesh & Glowing Severity Pillars'
                 : 'Live 2D Pins (Click markers to inspect incident dossiers)'}
             </span>
           </div>
           <div className="h-[480px] rounded-xl overflow-hidden border border-slate-200/90 bg-[#06111f]">
-            {viewMode === '3d' ? (
+            {viewMode === 'google' ? (
+              <GoogleEmergencyMap
+                incidents={filteredIncidents}
+                onIncidentClick={(inc: Incident) => setSelectedIncident(inc)}
+                selectedIncidentId={selectedIncident?.id}
+                height="480px"
+                onSwitchToLeaflet={() => setViewMode('2d')}
+              />
+            ) : viewMode === '3d' ? (
               <Geospatial3DMap
                 incidents={filteredIncidents}
                 onIncidentClick={(inc: Incident) => setSelectedIncident(inc)}

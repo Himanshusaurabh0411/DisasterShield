@@ -18,6 +18,7 @@ import { Incident } from '@/types';
 import { mockIncidents, disasterTypeLabels, priorityConfig } from '@/data/incidents';
 import { LiveEmergencyMap } from '@/components/map/LiveEmergencyMap';
 import { Geospatial3DMap } from '@/components/map/Geospatial3DMap';
+import { GoogleEmergencyMap } from '@/components/map/GoogleEmergencyMap';
 import { IncidentDrawer } from '@/components/reports/IncidentDrawer';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { timeAgo, formatNumber } from '@/lib/utils';
@@ -35,7 +36,7 @@ export function GlobalCommandCenter() {
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
   const [focusedIncidentId, setFocusedIncidentId] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [mapMode, setMapMode] = useState<'2d' | '3d'>('3d');
+  const [mapMode, setMapMode] = useState<'google' | '3d' | '2d'>('google');
   const navigate = useNavigate();
 
   const handleIncidentSelect = (incident: Incident) => {
@@ -74,30 +75,42 @@ export function GlobalCommandCenter() {
         </div>
 
         <div className="flex items-center gap-2.5">
-          {/* 2D / 3D Geospatial View Switcher */}
+          {/* Map Engine Switcher: Google Maps / 3D LiDAR / 2D Leaflet */}
           <div className="flex items-center rounded-xl bg-slate-100 p-1 border border-slate-200">
             <button
               type="button"
-              onClick={() => setMapMode('2d')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                mapMode === '2d'
+              onClick={() => setMapMode('google')}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                mapMode === 'google'
                   ? 'bg-white text-[#003366] shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              2D Live Map / 2D नक्शा
+              <MapPin className="h-3.5 w-3.5 text-emerald-600" />
+              <span>Google Maps</span>
             </button>
             <button
               type="button"
               onClick={() => setMapMode('3d')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 mapMode === '3d'
                   ? 'bg-[#003366] text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-              <span>3D WebGL Terrain / 3D भू-स्थानिक</span>
+              <span>3D LiDAR</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMapMode('2d')}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                mapMode === '2d'
+                  ? 'bg-white text-[#003366] shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <span>2D Leaflet</span>
             </button>
           </div>
 
@@ -175,9 +188,17 @@ export function GlobalCommandCenter() {
           </div>
         </div>
 
-        {/* CENTER COLUMN: Crucial Functional Interactive Map (2D or 3D WebGL) (6 cols) */}
+        {/* CENTER COLUMN: Crucial Functional Interactive Map (Google Maps, 3D LiDAR, or 2D) (6 cols) */}
         <div className="lg:col-span-6 rounded-2xl border border-slate-200 overflow-hidden relative h-[540px] shadow-sm bg-[#06111f]">
-          {mapMode === '3d' ? (
+          {mapMode === 'google' ? (
+            <GoogleEmergencyMap
+              incidents={mockIncidents}
+              selectedIncidentId={focusedIncidentId}
+              onIncidentClick={handleIncidentSelect}
+              height="540px"
+              onSwitchToLeaflet={() => setMapMode('2d')}
+            />
+          ) : mapMode === '3d' ? (
             <Geospatial3DMap
               incidents={mockIncidents}
               selectedIncidentId={focusedIncidentId}

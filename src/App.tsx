@@ -13,6 +13,7 @@ import { RestrictedResponder } from '@/pages/RestrictedResponder';
 import { Analytics } from '@/pages/Analytics';
 import { Admin } from '@/pages/Admin';
 import { About } from '@/pages/About';
+import { NewsPortal } from '@/pages/NewsPortal';
 import { NotFound } from '@/pages/NotFound';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="report" element={<Report />} />
             <Route path="track" element={<Track />} />
             <Route path="live" element={<Live />} />
+            <Route path="news" element={<NewsPortal />} />
             <Route path="responder" element={<Responder />} />
             <Route path="restricted-responder" element={<RestrictedResponder />} />
             <Route path="analytics" element={<Analytics />} />

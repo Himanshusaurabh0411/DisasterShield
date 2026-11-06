@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ShieldAlert,
@@ -15,13 +16,15 @@ import {
   ChevronRight,
   Layers,
   Sparkles,
-  CheckCircle2
+  CheckCircle2,
+  Newspaper
 } from 'lucide-react';
 import { realWorldDisasters } from '@/data/realWorldDisasters';
 import { DisasterRecoveryIncident } from '@/types';
 import { Button } from '@/components/ui/button';
 
 export function ImpactRecoverySection() {
+  const navigate = useNavigate();
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [activeDossier, setActiveDossier] = useState<DisasterRecoveryIncident | null>(null);
   const [modalImageTab, setModalImageTab] = useState<'primary' | 'secondary'>('primary');
@@ -61,20 +64,31 @@ export function ImpactRecoverySection() {
             </p>
           </div>
 
-          {/* Aggregate Quick Metric Pill */}
-          <div className="mt-4 md:mt-0 flex items-center gap-3 bg-white p-2.5 rounded-lg border border-slate-200 shadow-xs">
-            <div className="flex items-center justify-center h-10 w-10 rounded-full bg-emerald-50 text-emerald-700">
-              <LifeBuoy className="h-5 w-5" />
-            </div>
-            <div className="text-left">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Overall Relief Success Rate</span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                  {overallRescueRate}%
-                </span>
+          {/* Action CTAs & Quick Metric Pill */}
+          <div className="mt-4 md:mt-0 flex flex-wrap items-center gap-3">
+            <Button
+              onClick={() => navigate('/news')}
+              className="bg-[#003366] hover:bg-[#0A2540] text-white font-bold text-xs gap-1.5 rounded-lg shadow-xs cursor-pointer h-10 px-3.5"
+            >
+              <Newspaper className="h-4 w-4 text-[#FF9933]" />
+              <span>Full News Portal / आपदा समाचार</span>
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Button>
+
+            <div className="flex items-center gap-3 bg-white p-2 rounded-lg border border-slate-200 shadow-xs h-10">
+              <div className="flex items-center justify-center h-7 w-7 rounded-full bg-emerald-50 text-emerald-700">
+                <LifeBuoy className="h-4 w-4" />
               </div>
-              <div className="text-sm font-extrabold text-slate-800">
-                {totalRescued.toLocaleString()}+ <span className="text-xs font-normal text-slate-500">of {totalAffected.toLocaleString()} Rescued</span>
+              <div className="text-left leading-tight">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Rescue Rate</span>
+                  <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">
+                    {overallRescueRate}%
+                  </span>
+                </div>
+                <div className="text-xs font-extrabold text-slate-800">
+                  {totalRescued.toLocaleString()}+ <span className="text-[10px] font-normal text-slate-500">Rescued</span>
+                </div>
               </div>
             </div>
           </div>

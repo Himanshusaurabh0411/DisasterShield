@@ -17,6 +17,7 @@ const navLinks = [
   { to: '/report', label: 'REPORT INCIDENT', hindiLabel: 'आपदा दर्ज करें' },
   { to: '/track', label: 'TRACK DOSSIER', hindiLabel: 'स्थिति ट्रैक करें' },
   { to: '/live', label: 'LIVE SITUATION', hindiLabel: 'लाइव स्थिति' },
+  { to: '/news', label: 'DISASTER NEWS', hindiLabel: 'आपदा समाचार' },
   { to: '/responder', label: 'RESPONDERS & EOC', hindiLabel: 'राहत दल' },
   { to: '/analytics', label: 'ANALYTICS', hindiLabel: 'सांख्यिकी' },
   { to: '/admin', label: 'DUTY DESK', hindiLabel: 'सत्यापन कक्ष' },
